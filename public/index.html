@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pune Corporate Cars India Private Limited | Corporate Travel, Managed with Confidence</title>
+  <meta name="description" content="Pune Corporate Cars India Private Limited - Corporate car rental, chauffeur-driven executive cars, employee transportation, airport transfers, intercity and multi-city business travel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Interactive Automotive Car Tools & Telemetry Canvas in the Background -->
+  <canvas id="carToolsCanvas"></canvas>
+
+  <!-- 1. Utility Top Bar (From PDF Page 2 Contact Details & Page 7 Item 1) -->
+  <aside class="utility-bar" aria-label="Quick Contacts">
+    <div class="container utility-inner">
+      <div class="utility-contacts">
+        <span class="badge-247">24×7 Operations Desk</span>
+        <div class="contact-item">
+          <span>📞</span>
+          <a href="tel:+919822943334">+91 9822943334</a> / <a href="tel:+919405644855">+91 9405644855</a>
+        </div>
+        <div class="contact-item">
+          <span>💼 Corporate Sales:</span>
+          <a href="tel:+919822136667">+91 9822136667</a> / <a href="tel:+917350959600">+91 7350959600</a>
+        </div>
+        <div class="contact-item">
+          <span>✉</span>
+          <a href="mailto:reservations@punecorporatecars.com">reservations@punecorporatecars.com</a>
+        </div>
+      </div>
+      <div class="utility-actions">
+        <a href="#locations" class="contact-item">📍 Pan-India (100+ Major Cities)</a>
+        <a href="/admin" class="admin-link-btn" title="Operations Management Command">🔐 Admin Portal</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. Sticky Header & Navigation (From PDF Page 7 Recommended Navigation) -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="#" class="brand-logo-small">
+        <div class="brand-icon-gold">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="13" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div class="brand-text-nav">
+          <h2>PCC INDIA</h2>
+          <span>Pvt. Ltd.</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#fleet" class="nav-link">Fleet</a></li>
+          <li><a href="#pricing" class="nav-link">Pricing</a></li>
+          <li><a href="#directors" class="nav-link">Directors</a></li>
+          <li><a href="#locations" class="nav-link">Locations</a></li>
+          <li><a href="#solutions" class="nav-link">Corporate Solutions</a></li>
+          <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+          <li><a href="#blogs" class="nav-link">Blogs</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-primary btn-sm" onclick="openBookingModal({ service_type: 'Corporate car rental' })">
+          Request a Quote
+        </button>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. STARTING INTERFACE: COMPANY NAME TOP-MIDDLE + PROMINENT REAL CAR SHOWCASE -->
+  <section class="hero-starting-interface" id="home">
+    <div class="container">
+      
+      <!-- Company Name on the Top Middle of the Screen (Large & Styled with Attractive Colors) -->
+      <div class="company-branding-center">
+        <div class="hero-top-badge">
+          <span>★</span> ISO 9001:2015 & ISO 14001:2015 Certified • Pan-India Coverage Across 100+ Cities
+        </div>
+        <h1 class="brand-title-large">PUNE CORPORATE CARS</h1>
+        <div class="brand-subtitle-styled">INDIA PRIVATE LIMITED</div>
+        <p class="hero-tagline-text">
+          <strong>Corporate Travel, Managed with Confidence.</strong><br>
+          From daily employee commutes to executive travel and airport transfers, Pune Corporate Cars helps businesses coordinate comfortable, dependable chauffeur-driven journeys across India.
+        </p>
+      </div>
+
+      <!-- Starting Interface Centerpiece: Real Luxury Car Showcase + Quick Enquiry Form -->
+      <div class="hero-stage-grid">
+        
+        <!-- Prominent Real Car Centerpiece -->
+        <div class="hero-car-showcase-box">
+          <span class="hero-car-badge-pill">★ Executive Chauffeur Fleet</span>
+          
+          <div class="hero-car-image-wrap">
+            <img src="/assets/cars/hero-car.jpg" alt="Pune Corporate Cars Executive Chauffeur Fleet" class="hero-real-car-img">
+          </div>
+          <div class="hero-car-ground-reflection"></div>
+
+          <div style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.35rem;">
+            Mercedes-Benz & Executive Corporate Fleet
+          </div>
+          <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            Chauffeur-Driven Sedans, SUVs, Executive Cars, Employee Shuttles & Airport Transfers
+          </p>
+
+          <div class="hero-car-footer-actions">
+            <button class="btn btn-primary" onclick="openBookingModal({ service_type: 'Corporate car rental' })">
+              Request a Corporate Quote →
+            </button>
+            <a href="tel:+919822943334" class="btn btn-outline">
+              📞 Call 24×7 Helpdesk
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Enquiry Form (From PDF Page 7 Item 3 & Page 9 Item 12) -->
+        <div class="quick-enquiry-card">
+          <div class="enquiry-card-header">
+            <h2>
+              <span>⚡</span> Quick Enquiry Form
+            </h2>
+            <p>Tell us your travel requirements and our team will help you plan the right transport solution.</p>
+          </div>
+
+          <form id="quickEnquiryForm">
+            <div class="calc-row-2">
+              <div class="calc-form-group">
+                <label>Pickup City *</label>
+                <input type="text" class="calc-input" name="pickup_city" value="Pune" required placeholder="Pickup City">
+              </div>
+              <div class="calc-form-group">
+                <label>Destination / Cities *</label>
+                <input type="text" class="calc-input" name="destination" required placeholder="Destination">
+              </div>
+            </div>
+
+            <div class="calc-row-2">
+              <div class="calc-form-group">
+                <label>Travel Date *</label>
+                <input type="date" class="calc-input" name="travel_date" required id="quickDate">
+              </div>
+              <div class="calc-form-group">
+                <label>Travel Time *</label>
+                <input type="text" class="calc-input" name="travel_time" value="09:00 AM" placeholder="09:00 AM" required>
+              </div>
+            </div>
+
+            <div class="calc-row-2">
+              <div class="calc-form-group">
+                <label>Service Type *</label>
+                <select class="calc-select" name="service_type" required>
+                  <option value="Corporate car rental">Corporate car rental</option>
+                  <option value="Employee transportation">Employee transportation</option>
+                  <option value="Airport transfers">Airport transfers</option>
+                  <option value="Executive and VIP travel">Executive and VIP travel</option>
+                  <option value="Intercity / outstation travel">Intercity / outstation travel</option>
+                  <option value="Industrial and shuttle transport">Industrial and shuttle transport</option>
+                  <option value="Monthly cab services">Monthly cab services</option>
+                </select>
+              </div>
+              <div class="calc-form-group">
+                <label>Passenger Count *</label>
+                <input type="number" class="calc-input" name="passenger_count" value="1" min="1" max="50" required>
+              </div>
+            </div>
+
+            <div class="calc-form-group">
+              <label>Vehicle Preference (Optional)</label>
+              <select class="calc-select" name="vehicle_id" id="quickVehicleSelect">
+                <option value="">Select Vehicle Preference (Optional)</option>
+              </select>
+            </div>
+
+            <div class="calc-row-2">
+              <div class="calc-form-group">
+                <label>Company Name</label>
+                <input type="text" class="calc-input" name="company_name" placeholder="Company Name">
+              </div>
+              <div class="calc-form-group">
+                <label>Contact Name *</label>
+                <input type="text" class="calc-input" name="contact_name" required placeholder="Your Name">
+              </div>
+            </div>
+
+            <div class="calc-row-2">
+              <div class="calc-form-group">
+                <label>Phone Number *</label>
+                <input type="tel" class="calc-input" name="phone" required placeholder="+91 9822...">
+              </div>
+              <div class="calc-form-group">
+                <label>Email *</label>
+                <input type="email" class="calc-input" name="email" required placeholder="corporate@company.com">
+              </div>
+            </div>
+
+            <div class="calc-form-group">
+              <label>Additional Requirements</label>
+              <input type="text" class="calc-input" name="message" placeholder="Shift timings, contract duration, flight number...">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem;">
+              Request a Corporate Quote →
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SERVICES AND OFFERINGS (Exact 8 Categories from PDF Page 3) -->
+  <section class="section" id="services" style="background: rgba(4, 9, 22, 0.65);">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Services & Offerings</div>
+        <h2 class="section-title">One Transport Partner for Everyday Business Travel</h2>
+        <p class="section-desc">
+          Professional chauffeur-driven transport for companies, employees, executives, airport transfers, VIP guests, and business travel.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <!-- 1 -->
+        <div class="service-card">
+          <div class="service-icon-box">🚗</div>
+          <h3>Corporate Car Rental</h3>
+          <p>Chauffeur-driven sedans, SUVs, executive cars, short-term rentals, dedicated vehicles, and longer-term corporate contracts.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Corporate car rental' })">Enquire →</button>
+        </div>
+
+        <!-- 2 -->
+        <div class="service-card">
+          <div class="service-icon-box">🚌</div>
+          <h3>Employee Transportation</h3>
+          <p>Daily staff commute, shift-based pickup/drop, employee shuttles, route planning, and workforce movement for offices and industrial units.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Employee transportation' })">Enquire →</button>
+        </div>
+
+        <!-- 3 -->
+        <div class="service-card">
+          <div class="service-icon-box">✈️</div>
+          <h3>Airport Transfers</h3>
+          <p>Corporate airport pickup and drop-offs for employees, executives, business visitors, and VIP guests with punctual coordinated dispatch.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Airport transfers' })">Enquire →</button>
+        </div>
+
+        <!-- 4 -->
+        <div class="service-card">
+          <div class="service-icon-box">👑</div>
+          <h3>Executive and VIP Travel</h3>
+          <p>Premium cars and professional chauffeurs for senior management, clients, conferences, meetings, and special assignments.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Executive and VIP travel' })">Enquire →</button>
+        </div>
+
+        <!-- 5 -->
+        <div class="service-card">
+          <div class="service-icon-box">🛣️</div>
+          <h3>Intercity / Outstation Travel</h3>
+          <p>Long-distance journeys, business tours, and coordinated travel between cities across Maharashtra and Pan-India networks.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Intercity / outstation travel' })">Enquire →</button>
+        </div>
+
+        <!-- 6 -->
+        <div class="service-card">
+          <div class="service-icon-box">🌐</div>
+          <h3>Pan-India Corporate Mobility</h3>
+          <p>A multi-city network and a centralized coordination model for companies needing transport across 100+ major cities in India.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Pan-India corporate mobility' })">Enquire →</button>
+        </div>
+
+        <!-- 7 -->
+        <div class="service-card">
+          <div class="service-icon-box">🏭</div>
+          <h3>Industrial and Shuttle Transport</h3>
+          <p>Worker transport, industrial shuttles, employee commute, company cabs, and SUVs for group travel around Markal MIDC and manufacturing zones.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Industrial and shuttle transport' })">Enquire →</button>
+        </div>
+
+        <!-- 8 -->
+        <div class="service-card">
+          <div class="service-icon-box">📅</div>
+          <h3>Monthly Cab Services</h3>
+          <p>Recurring office commuting and longer-term transport needs with flexible rental plans, dedicated drivers, and centralized monthly reporting.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Monthly cab services' })">Enquire →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FLEET LIST (15 Popular Models with Real Photos - PDF Page 3 & 4) -->
+  <section class="section" id="fleet">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Fleet List Shown on Homepage</div>
+        <h2 class="section-title">15 Popular Models in Our Fleet</h2>
+        <p class="section-desc">
+          Clean, air-conditioned, well-maintained vehicles with professional, courteous, trained, uniformed and background-verified chauffeurs.
+        </p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="fleet-filter-bar">
+        <button class="fleet-filter-btn active" data-category="all">All Fleet (15)</button>
+        <button class="fleet-filter-btn" data-category="sedan">Sedans</button>
+        <button class="fleet-filter-btn" data-category="mpv">MPV</button>
+        <button class="fleet-filter-btn" data-category="premium_mpv">Premium / Hybrid MPV</button>
+        <button class="fleet-filter-btn" data-category="luxury_sedan">Luxury Sedan</button>
+        <button class="fleet-filter-btn" data-category="suv">SUV</button>
+      </div>
+
+      <!-- Real Vehicle Photography Grid -->
+      <div class="fleet-grid" id="fleetGrid">
+        <!-- Rendered dynamically from database with real photos -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. PRICING & CORPORATE SOLUTIONS (PDF Page 7 Item 5 & Item 9) -->
+  <section class="section" id="pricing" style="background: rgba(4, 8, 20, 0.7);">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Corporate Rental Plans</div>
+        <h2 class="section-title">Flexible Rental Plans & Corporate Contracts</h2>
+        <p class="section-desc">
+          Enquiry-based corporate billing, MIS/reporting, flexible rental plans, and long-term contracts tailored to your exact business mobility footprint.
+        </p>
+      </div>
+
+      <div class="pricing-grid" id="pricingGrid">
+        <!-- Rendered from database -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DIRECTORS & LEADERSHIP (From PDF Sanjay Nalawade & Leadership Brief) -->
+  <section class="section directors-section" id="directors">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Company Leadership & Governance</div>
+        <h2 class="section-title">Leadership & Operational Standards</h2>
+        <p class="section-desc">
+          Pune Corporate Cars India Private Limited presents itself as a trusted corporate car rental and ground-transportation provider based in Pune, Maharashtra.
+        </p>
+      </div>
+
+      <!-- Founder & Managing Director Sanjay Nalawade Profile -->
+      <div id="directorsContainer">
+        <!-- Loaded dynamically from database -->
+      </div>
+
+      <!-- Service Promise & Certifications from PDF -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;">
+        <div>
+          <h3 style="font-size: 1.35rem; color: #fff; margin-bottom: 0.75rem;">Service Promise & Themes</h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+            Quality, safety, reliability, punctuality, comfort, professional chauffeurs, coordinated operations, and 24×7 support.
+          </p>
+          <div style="font-size: 0.88rem; color: #cbd5e1;">
+            Corporate travel use cases: Daily office commute, employee shifts, corporate meetings/events, client visits, airport transfers, VIP transport, long-term contracts, industrial travel, and outstation journeys.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
+          <div style="background: rgba(3, 7, 18, 0.85); border: 1px solid var(--border-gold); padding: 1.25rem; border-radius: var(--radius-md); flex: 1; min-width: 200px;">
+            <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">🏅</div>
+            <h4 style="font-size: 1rem; color: #fff;">ISO 9001:2015</h4>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Quality Management System Certified Operations</p>
+          </div>
+          <div style="background: rgba(3, 7, 18, 0.85); border: 1px solid var(--border-cyan); padding: 1.25rem; border-radius: var(--radius-md); flex: 1; min-width: 200px;">
+            <div style="font-size: 1.8rem; margin-bottom: 0.35rem;">🌱</div>
+            <h4 style="font-size: 1rem; color: #fff;">ISO 14001:2015</h4>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Environmental Management & Hybrid Fleet Focus</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. SERVICE LOCATIONS AND NETWORK (PDF Page 5 Deduplicated Cities) -->
+  <section class="section locations-section" id="locations">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Service Locations & Network</div>
+        <h2 class="section-title">Pan-India Service Footprint Across 100+ Cities</h2>
+        <p class="section-desc">
+          Deduplicated network of service cities across India. Multi-city network and centralized coordination model.
+        </p>
+      </div>
+
+      <div class="locations-search-box">
+        <span class="search-icon-pos">🔍</span>
+        <input type="text" class="locations-search-input" id="locationSearchInput" placeholder="Search city (e.g. Pune, Mumbai, Bengaluru, Delhi, Ahmedabad, Kolkata)...">
+      </div>
+
+      <div class="locations-grid" id="locationsGrid">
+        <!-- Rendered dynamically from database -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. BRAND PROMISES AND TRUST SIGNALS (PDF Page 5 Item 7) -->
+  <section class="section" style="background: rgba(4, 9, 22, 0.75);">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Brand Promises & Trust Signals</div>
+        <h2 class="section-title">Professional Coordination. Clear Communication. Dependable Journeys.</h2>
+        <p class="section-desc">
+          Built on verified driver checks, fleet maintenance processes, organized coordination, and corporate billing.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon-box">🕒</div>
+          <h3>24×7 Operations & Support</h3>
+          <p>Dedicated 24×7 operations and booking support desk handling reservations, vehicle dispatch, and emergency client requests.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon-box">👔</div>
+          <h3>Professional Chauffeurs</h3>
+          <p>Professional, courteous and trained chauffeurs; uniformed and background-verified drivers with extensive corporate route familiarity.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon-box">✨</div>
+          <h3>Clean & Maintained Vehicles</h3>
+          <p>Clean, air-conditioned, well-maintained vehicles checked regularly for mechanical safety, comfort, and interior hygiene.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon-box">⏱️</div>
+          <h3>Punctual Pickups</h3>
+          <p>Punctual pickups for airport runs, corporate meetings, events, industrial shuttles, and daily office commutes.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon-box">🛰️</div>
+          <h3>GPS-Enabled Ride Monitoring</h3>
+          <p>GPS-enabled vehicles, ride monitoring, and organized fleet coordination claimed across all major operating corridors.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon-box">🧾</div>
+          <h3>Corporate Billing & MIS</h3>
+          <p>Corporate billing, detailed MIS/reporting, flexible rental plans, and long-term contracts designed for corporate procurement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. HOW BOOKING WORKS (PDF Page 7 Item 7) -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">How Booking Works</div>
+        <h2 class="section-title">Simple 5-Step Corporate Workflow</h2>
+        <p class="section-desc">From requirement sharing to transparent invoice reporting.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.5rem; text-align: center;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem 1.25rem;">
+          <div style="font-size: 1.8rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.5rem;">01</div>
+          <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.4rem;">Share Requirement</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Submit travel dates, city, passenger count, and preferred vehicle.</p>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem 1.25rem;">
+          <div style="font-size: 1.8rem; color: var(--primary-gold-light); font-weight: 800; margin-bottom: 0.5rem;">02</div>
+          <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.4rem;">Receive Proposal</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Get competitive proposal with vehicle availability and transparent terms.</p>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem 1.25rem;">
+          <div style="font-size: 1.8rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.5rem;">03</div>
+          <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.4rem;">Confirm Itinerary</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Lock travel schedule and receive dispatch confirmation with driver details.</p>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem 1.25rem;">
+          <div style="font-size: 1.8rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.5rem;">04</div>
+          <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.4rem;">Trip Coordination</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Punctual pickup, GPS tracking, and real-time operations desk monitoring.</p>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.75rem 1.25rem;">
+          <div style="font-size: 1.8rem; color: var(--primary-gold); font-weight: 800; margin-bottom: 0.5rem;">05</div>
+          <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.4rem;">Invoice / Reporting</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">Consolidated corporate invoice with granular MIS trip reporting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. CORPORATE SOLUTIONS (PDF Page 7 Item 9) -->
+  <section class="section" id="solutions" style="background: rgba(3, 7, 18, 0.7);">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Corporate Solutions</div>
+        <h2 class="section-title">Specialized Ground Mobility Architecture</h2>
+        <p class="section-desc">Tailored operational models for diverse corporate needs.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
+          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Employee Shifts & Shuttles</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Rostered pickup/drop for tech parks and IT campuses with automated route planning and night escort safety.</p>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
+          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Dedicated Monthly Contracts</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Dedicated vehicles and chauffeurs assigned exclusively to your organization on renewable monthly terms.</p>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
+          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Airport Helpdesk & Protocol</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Dedicated airport pickup desk with terminal meet-and-greet placard service and live flight tracking.</p>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
+          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Industrial Workforce Transportation</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Worker transport, company cabs, and group shuttles connecting Markal MIDC, Chakan, and manufacturing hubs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. TESTIMONIALS (PDF Page 5-6 Item 8 Names & Themes) -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Testimonials & Client Feedback</div>
+        <h2 class="section-title">Verified Corporate Client Experiences</h2>
+        <p class="section-desc">
+          Emphasizing punctuality, clean vehicles, professional drivers, responsive operations, smooth coordination and last-minute flexibility.
+        </p>
+      </div>
+
+      <div class="testimonials-grid" id="testimonialsGrid">
+        <!-- Rendered from database -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. BLOG TOPICS (Exact Titles from PDF Page 6) -->
+  <section class="section" id="blogs" style="background: rgba(4, 9, 22, 0.7);">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Corporate Mobility Insights</div>
+        <h2 class="section-title">Featured Blog Articles</h2>
+        <p class="section-desc">
+          Articles positioned around office commuting, regular corporate travel, reliability, comfort, and cost-effective service.
+        </p>
+      </div>
+
+      <div class="blogs-grid" id="blogsGrid">
+        <!-- Rendered from database with exact titles from PDF -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. FREQUENTLY ASKED QUESTIONS (From PDF Page 7 Item 11) -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Frequently Asked Questions</div>
+        <h2 class="section-title">Clarifications & Policies</h2>
+        <p class="section-desc">Essential information on lead times, driver vetting, billing, and cancellations.</p>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>What booking lead time is required?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            For local car rentals and airport transfers, we recommend a booking lead time of 2 to 3 hours. For luxury sedans or outstation journeys, 12 to 24 hours advance notice is preferred. For immediate last-minute requirements, our 24×7 operations helpdesk can be contacted directly at +91 9822943334.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What are the cancellation and waiting terms?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Local trip bookings cancelled more than 3 hours prior to dispatch incur zero cancellation fees. For airport transfers, complimentary 45 minutes waiting is provided from flight touchdown.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does corporate billing and MIS reporting work?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            We provide consolidated monthly billing with detailed MIS reports itemizing dates, duty slips, kilometers, tolls, and GST breakdown for simple accounting reconciliation.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Are drivers background-verified and uniformed?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Yes. All chauffeurs are professional, courteous, trained, uniformed, and background-verified with valid commercial licenses and police verification records.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does multi-city Pan-India coordination operate?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Through our Pan-India network across 100+ major cities, companies can centrally book, coordinate, and receive unified invoices for ground mobility requirements nationwide.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. FINAL CTA & FOOTER (PDF Page 2 & Page 7 Item 12) -->
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer-top-grid">
+        <div class="footer-brand">
+          <div class="brand-logo-small" style="margin-bottom: 1rem;">
+            <div class="brand-icon-gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2.5">
+                <rect x="2" y="7" width="20" height="13" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <div class="brand-text-nav">
+              <h2 style="font-size: 1.15rem; color: #fff;">PUNE CORPORATE CARS</h2>
+              <span style="font-size: 0.7rem; color: var(--accent-cyan);">India Private Limited</span>
+            </div>
+          </div>
+          <p>
+            Corporate car rentals, chauffeur-driven executive cars, employee transportation, airport transfers, intercity and multi-city business travel.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--primary-gold-light);">
+            ISO 9001:2015 & ISO 14001:2015 Certifications Mentioned <br>
+            Pan-India Coverage across 100+ Major Cities
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services Catalogue</h4>
+          <ul class="footer-links">
+            <li><a href="#services">Corporate car rental</a></li>
+            <li><a href="#services">Employee transportation</a></li>
+            <li><a href="#services">Airport transfers</a></li>
+            <li><a href="#services">Executive and VIP travel</a></li>
+            <li><a href="#services">Intercity / outstation travel</a></li>
+            <li><a href="#services">Industrial & shuttle transport</a></li>
+            <li><a href="#services">Monthly cab services</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Blog Topics</h4>
+          <ul class="footer-links">
+            <li><a href="#blogs">Corporate cab service in pune</a></li>
+            <li><a href="#blogs">Monthly Cab Services in Pune</a></li>
+            <li><a href="#blogs">Corporate Cab Services in Bangalore</a></li>
+            <li><a href="#locations">Pan-India City Network</a></li>
+            <li><a href="#directors">Leadership & Management</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact Details</h4>
+          <address class="footer-address">
+            <strong>Address listed on service pages:</strong><br>
+            Gate No 124/2/1, Plot No. 86,<br>
+            Vishva Vilas City, Lane No. 08,<br>
+            Khandave Nagar, Nagar Road,<br>
+            Lohgaon, Haveli, Pune 412207,<br>
+            Maharashtra, India.
+          </address>
+          <div style="margin-top: 1rem; font-size: 0.84rem; line-height: 1.8;">
+            <div><strong>24×7 Operations:</strong> <a href="tel:+919822943334" style="color: var(--accent-cyan);">+91 9822943334</a> / <a href="tel:+919405644855" style="color: var(--accent-cyan);">+91 9405644855</a></div>
+            <div><strong>Corporate Sales:</strong> <a href="tel:+919822136667" style="color: var(--primary-gold-light);">+91 9822136667</a> / <a href="tel:+917350959600" style="color: var(--primary-gold-light);">+91 7350959600</a></div>
+            <div><strong>Reservations:</strong> <a href="mailto:reservations@punecorporatecars.com" style="color: var(--text-muted);">reservations@punecorporatecars.com</a></div>
+            <div><strong>Corporate Sales Email:</strong> <a href="mailto:sales@punecorporatecars.com" style="color: var(--text-muted);">sales@punecorporatecars.com</a></div>
+            <div><strong>Additional Contact:</strong> <a href="mailto:sanjay.nalawade@punecorporatecars.com" style="color: var(--text-muted);">sanjay.nalawade@punecorporatecars.com</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Pune Corporate Cars India Private Limited (also styled as Pune Corporate Cars India Pvt. Ltd.). All Rights Reserved.
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="/admin" style="color: var(--primary-gold-light); font-weight: 700;">🔐 Admin Operations Portal</a>
+          <a href="#faq">Privacy Policy</a>
+          <a href="#faq">Terms & Conditions</a>
+          <a href="#faq">Cancellation Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 16. Interactive Booking Modal -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="closeBookingModal" aria-label="Close modal">✕</button>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.4rem; color: #fff; margin-bottom: 0.25rem;">Request a Corporate Quote</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Submit requirement details below and our team will coordinate your itinerary.</p>
+      </div>
+
+      <form id="bookingForm">
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Service Required *</label>
+            <select class="calc-select" name="service_type" id="modalServiceType" required>
+              <option value="Corporate car rental">Corporate car rental</option>
+              <option value="Employee transportation">Employee transportation</option>
+              <option value="Airport transfers">Airport transfers</option>
+              <option value="Executive and VIP travel">Executive and VIP travel</option>
+              <option value="Intercity / outstation travel">Intercity / outstation travel</option>
+              <option value="Industrial and shuttle transport">Industrial and shuttle transport</option>
+              <option value="Monthly cab services">Monthly cab services</option>
+            </select>
+          </div>
+
+          <div class="calc-form-group">
+            <label>Vehicle Preference *</label>
+            <select class="calc-select" name="vehicle_id" id="modalVehicleSelect" required>
+              <option value="">Choose vehicle...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Contact Name *</label>
+            <input type="text" class="calc-input" name="customer_name" required placeholder="Contact / Passenger Name">
+          </div>
+          <div class="calc-form-group">
+            <label>Company Name</label>
+            <input type="text" class="calc-input" name="company_name" placeholder="Company Name">
+          </div>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Phone Number *</label>
+            <input type="tel" class="calc-input" name="phone" required placeholder="+91 9822...">
+          </div>
+          <div class="calc-form-group">
+            <label>Email Address *</label>
+            <input type="email" class="calc-input" name="email" required placeholder="corporate@company.com">
+          </div>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Pickup City *</label>
+            <input type="text" class="calc-input" name="pickup_city" id="modalPickupCity" value="Pune" required>
+          </div>
+          <div class="calc-form-group">
+            <label>Destination / Cities</label>
+            <input type="text" class="calc-input" name="destination" placeholder="Destination City / Airport">
+          </div>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Travel Date *</label>
+            <input type="date" class="calc-input" name="pickup_date" id="modalDate" required>
+          </div>
+          <div class="calc-form-group">
+            <label>Travel Time *</label>
+            <input type="text" class="calc-input" name="pickup_time" value="09:00 AM" placeholder="09:00 AM" required>
+          </div>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Passenger Count</label>
+            <input type="number" class="calc-input" name="passengers" value="1" min="1" max="50">
+          </div>
+          <div class="calc-form-group">
+            <label>Luggage Details</label>
+            <input type="number" class="calc-input" name="luggage_bags" value="1" min="0" max="20">
+          </div>
+        </div>
+
+        <div class="calc-form-group">
+          <label>Additional Requirements / Message</label>
+          <input type="text" class="calc-input" name="special_requests" id="modalSpecialRequests" placeholder="Shift timings, contract duration, flight details...">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem;">
+          Submit Corporate Proposal Request →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 17. Floating Actions for Mobile & Quick Connect -->
+  <div class="floating-actions">
+    <a href="https://wa.me/919822943334?text=Hello%20Pune%20Corporate%20Cars,%20I%20would%20like%20to%20request%20a%20quote" 
+       target="_blank" rel="noopener noreferrer" class="floating-btn floating-whatsapp" title="WhatsApp 24x7 Helpdesk">
+      💬
+    </a>
+    <a href="tel:+919822943334" class="floating-btn floating-phone" title="Call Operations Directly">
+      📞
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/car-tools-bg.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations Command Center | Pune Corporate Cars</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Login Screen (Hidden once authenticated) -->
+  <div class="admin-login-wrapper" id="loginWrapper">
+    <div class="admin-login-card">
+      <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔐</div>
+      <h2 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.25rem;">Operations Command</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.75rem;">Pune Corporate Cars India Pvt. Ltd.</p>
+
+      <form id="adminLoginForm">
+        <div class="calc-form-group" style="text-align: left;">
+          <label>Administrator Username</label>
+          <input type="text" class="calc-input" id="loginUsername" value="admin" required>
+        </div>
+
+        <div class="calc-form-group" style="text-align: left;">
+          <label>Password</label>
+          <input type="password" class="calc-input" id="loginPassword" value="adminPassword2026!" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+          Sign In to Dispatch Console →
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+        <button id="demoLoginBtn" class="btn btn-outline btn-sm" style="width: 100%;">
+          ⚡ Quick Client Demo Access (1-Click)
+        </button>
+      </div>
+
+      <div style="margin-top: 1rem;">
+        <a href="/" style="font-size: 0.8rem; color: var(--text-dim);">← Back to Public Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Main Layout -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="brand-icon" style="width: 36px; height: 36px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2">
+            <rect x="2" y="7" width="20" height="13" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+        </div>
+        <div>
+          <h2>PCC DISPATCH</h2>
+          <span>Central Operations</span>
+        </div>
+      </div>
+
+      <ul class="admin-nav">
+        <li class="admin-nav-item active" id="navBookings">
+          <span>📋</span> All Bookings
+        </li>
+        <li class="admin-nav-item" id="navEnquiries">
+          <span>💼</span> Corporate RFQs
+        </li>
+        <li>
+          <a href="/" class="admin-nav-item" style="text-decoration: none;">
+            <span>🌐</span> View Live Website
+          </a>
+        </li>
+      </ul>
+
+      <div class="admin-sidebar-footer">
+        <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 0.75rem;">
+          Logged in as: <strong style="color: #fff;">Ops Command</strong>
+        </div>
+        <button id="adminLogoutBtn" class="btn btn-outline btn-sm" style="width: 100%;">
+          Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <header class="admin-top-bar">
+        <div>
+          <h1 style="font-size: 1.6rem; font-weight: 800; color: #fff;">Operations Command Center</h1>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Real-time corporate ground mobility dispatch & lead management.</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-outline btn-sm" onclick="exportData('bookings')">
+            📥 Export Bookings CSV
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="exportData('enquiries')">
+            📥 Export RFQs CSV
+          </button>
+        </div>
+      </header>
+
+      <!-- KPI Stat Cards -->
+      <section class="admin-stats-grid">
+        <div class="admin-stat-card cyan-glow">
+          <div class="admin-stat-label">Total Bookings</div>
+          <div class="admin-stat-val" id="statTotalBookings">-</div>
+        </div>
+        <div class="admin-stat-card gold-glow">
+          <div class="admin-stat-label">New / Pending Quotes</div>
+          <div class="admin-stat-val" id="statNewBookings" style="color: var(--admin-yellow);">-</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Corporate RFQ Leads</div>
+          <div class="admin-stat-val" id="statEnquiries" style="color: var(--admin-cyan);">-</div>
+        </div>
+        <div class="admin-stat-card gold-glow">
+          <div class="admin-stat-label">Pipeline Value</div>
+          <div class="admin-stat-val" id="statRevenue" style="color: var(--admin-gold);">-</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-label">Active Fleet Models</div>
+          <div class="admin-stat-val" id="statFleet" style="color: var(--admin-green);">15</div>
+        </div>
+      </section>
+
+      <!-- Section: Bookings Table -->
+      <div id="secBookings">
+        <div class="admin-toolbar">
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <input type="text" class="admin-search-input" id="adminSearchInput" placeholder="Search ref, passenger, company...">
+            <select class="calc-select" id="adminStatusFilter" style="width: 160px; padding: 0.55rem 0.75rem;">
+              <option value="all">All Statuses</option>
+              <option value="New">New</option>
+              <option value="Quoted">Quoted</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div style="font-size: 0.85rem; color: #94a3b8;">
+            Auto-refreshed with real-time SQLite database.
+          </div>
+        </div>
+
+        <div class="admin-table-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking Ref</th>
+                  <th>Customer / Company</th>
+                  <th>Service & Vehicle</th>
+                  <th>Route & Schedule</th>
+                  <th>Estimated Fare</th>
+                  <th>Status</th>
+                  <th>Cab & Driver</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Corporate RFQ Enquiries Table (Hidden by default) -->
+      <div id="secEnquiries" style="display: none;">
+        <div class="admin-toolbar">
+          <h2 style="font-size: 1.25rem; color: #fff;">Inbound Enterprise Contracts & Shift Commutes</h2>
+          <div style="font-size: 0.85rem; color: #94a3b8;">
+            High-volume corporate proposals and fleet tenders.
+          </div>
+        </div>
+
+        <div class="admin-table-card">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>RFQ Ref</th>
+                  <th>Enterprise Details</th>
+                  <th>Service Required</th>
+                  <th>Headcount & Term</th>
+                  <th>Route & Notes</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="enquiriesTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Booking Edit / Dispatch Modal -->
+  <div class="admin-modal-overlay" id="editBookingModal">
+    <div class="admin-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.25rem; color: #fff;">Manage Dispatch & Allocation</h3>
+        <button class="modal-close-btn" style="position: static;" onclick="closeEditBookingModal()">✕</button>
+      </div>
+
+      <div style="background: rgba(0,0,0,0.3); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.8rem; color: #94a3b8;">Booking: <strong id="editModalRef" style="color: var(--admin-gold);"></strong></div>
+        <div style="font-size: 0.85rem; color: #fff;" id="editModalCustomer"></div>
+      </div>
+
+      <div class="calc-form-group">
+        <label>Booking Status</label>
+        <select class="calc-select" id="editModalStatus">
+          <option value="New">New</option>
+          <option value="Quoted">Quoted</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="calc-row-2">
+        <div class="calc-form-group">
+          <label>Assigned Chauffeur Name</label>
+          <input type="text" class="calc-input" id="editModalDriver" placeholder="e.g. Ramesh K. (+91 9822...)">
+        </div>
+        <div class="calc-form-group">
+          <label>Assigned Vehicle Plate Number</label>
+          <input type="text" class="calc-input" id="editModalCab" placeholder="e.g. MH 12 AB 1234">
+        </div>
+      </div>
+
+      <div class="calc-form-group">
+        <label>Internal Operations Notes</label>
+        <textarea class="calc-input" id="editModalNotes" rows="2" placeholder="Driver briefed, meet & greet placard ready..."></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+        <button class="btn btn-outline btn-sm" onclick="closeEditBookingModal()">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="saveBookingChanges()">Save Dispatch Update</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
+
