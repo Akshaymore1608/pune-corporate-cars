@@ -379,6 +379,87 @@ app.post('/api/enquiries', (req, res) => {
 });
 
 // -------------------------------------------------------------
+// VERCEL AI SDK AGENT ENDPOINTS
+// -------------------------------------------------------------
+
+const { runPCCAgent, resolveModel, createBookingQuote } = require('./agent');
+
+// AI Agent Chat / Assistant
+app.post(['/api/agent/chat', '/api/chat'], async (req, res) => {
+  try {
+    const { prompt, messages = [] } = req.body;
+    if (!prompt && (!messages || messages.length === 0)) {
+      return res.status(400).json({ error: 'Please provide prompt or messages array' });
+    }
+
+    const result = await runPCCAgent({ prompt, messages });
+    res.json({
+      success: true,
+      text: result.text,
+      toolCalls: result.toolCalls || [],
+      toolResults: result.toolResults || [],
+      executionMode: result.executionMode,
+      model: result.model,
+      provider: result.provider,
+      warning: result.warning
+    });
+  } catch (err) {
+    console.error('Agent chat error:', err);
+    res.status(500).json({ error: 'AI Agent failed to process request', details: err.message });
+  }
+});
+
+// AI Agent Info & Capabilities
+app.get('/api/agent/info', (req, res) => {
+  const modelInfo = resolveModel();
+  res.json({
+    name: 'Pune Corporate Cars Executive AI Concierge',
+    framework: 'Vercel AI SDK',
+    agentClass: 'ToolLoopAgent',
+    configuredModel: modelInfo ? modelInfo.modelName : 'smart_local_engine',
+    provider: modelInfo ? modelInfo.provider : 'embedded_rules_engine',
+    hasApiKey: Boolean(modelInfo),
+    tools: [
+      {
+        name: 'searchFleet',
+        description: 'Live query of 15 luxury and corporate fleet models with seating and pricing specifications'
+      },
+      {
+        name: 'checkCityCoverage',
+        description: 'Verify coverage across 49+ state-wise cities and 19 regional hubs in India'
+      },
+      {
+        name: 'calculateFareEstimate',
+        description: 'Instant dynamic calculation for Local 8hr/80km, Airport Transfers, and Outstation trips'
+      },
+      {
+        name: 'createBookingQuote',
+        description: 'Generate verified reservation references recorded in PCC dispatch queue'
+      }
+    ],
+    samplePrompts: [
+      'Which luxury sedans do you have available in Pune?',
+      'Calculate fare for Toyota Innova Crysta for outstation from Pune to Mumbai',
+      'Do you have corporate transit services in Bengaluru and Hyderabad?',
+      'What are your 24/7 airport transfer rates for Mercedes-Benz?'
+    ]
+  });
+});
+
+// Direct Quote Tool via Agent
+app.post('/api/agent/quote', async (req, res) => {
+  try {
+    const quote = await createBookingQuote.execute(req.body);
+    if (!quote.success) {
+      return res.status(400).json(quote);
+    }
+    res.status(201).json(quote);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to process AI quote', details: err.message });
+  }
+});
+
+// -------------------------------------------------------------
 // ADMIN REST API ENDPOINTS
 // -------------------------------------------------------------
 

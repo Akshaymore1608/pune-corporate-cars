@@ -94,6 +94,35 @@ async function runTests() {
     const csvExport = await fetch(`${baseUrl}/api/admin/export/bookings?token=${adminLogin.token}`).then(r => r.text());
     assert(csvExport.includes('Booking Ref') && csvExport.includes(newBooking.bookingRef), 'CSV Export contains latest booking');
 
+    // Test 13: Vercel AI SDK Agent Info
+    const agentInfo = await fetch(`${baseUrl}/api/agent/info`).then(r => r.json());
+    assert(agentInfo.framework === 'Vercel AI SDK' && agentInfo.tools.length === 4, `Vercel AI SDK Agent registered with ${agentInfo.tools.length} corporate tools`);
+
+    // Test 14: Vercel AI SDK Agent Query & Tool Execution
+    const agentChat = await fetch(`${baseUrl}/api/agent/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: 'Which luxury cars do you have in Pune?' })
+    }).then(r => r.json());
+    assert(agentChat.success && agentChat.text.includes('Mercedes-Benz'), 'AI Agent executes searchFleet and returns luxury cars');
+
+    // Test 15: Vercel AI SDK Instant Quote Generation
+    const agentQuote = await fetch(`${baseUrl}/api/agent/quote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerName: 'Anil Deshmukh',
+        companyName: 'Tata Consultancy Services',
+        phone: '+91 98220 99999',
+        email: 'anil.d@tcs.com',
+        serviceType: 'Executive Car Rental',
+        pickupCity: 'Pune',
+        pickupDate: '2026-11-15',
+        pickupTime: '08:30 AM'
+      })
+    }).then(r => r.json());
+    assert(agentQuote.success && agentQuote.bookingRef.startsWith('PCC-'), `AI Agent quote generator created reference: ${agentQuote.bookingRef}`);
+
     console.log(`\n====================================================`);
     console.log(`📊 TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
     console.log(`====================================================`);
