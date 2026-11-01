@@ -1,7 +1,25 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('node:path');
+const fs = require('node:fs');
 
-const dbPath = path.join(__dirname, 'pune_corporate_cars.db');
+let dbPath = path.join(__dirname, 'pune_corporate_cars.db');
+
+// If running in serverless environment (e.g. Vercel), copy database to writable /tmp directory
+if (process.env.VERCEL) {
+  const tmpDbPath = path.join('/tmp', 'pune_corporate_cars.db');
+  if (!fs.existsSync(tmpDbPath) && fs.existsSync(dbPath)) {
+    try {
+      fs.copyFileSync(dbPath, tmpDbPath);
+      console.log('Database synced to /tmp on Vercel');
+    } catch (e) {
+      console.error('Failed to copy db to /tmp:', e.message);
+    }
+  }
+  if (fs.existsSync(tmpDbPath)) {
+    dbPath = tmpDbPath;
+  }
+}
+
 const db = new DatabaseSync(dbPath);
 
 // Enable foreign keys and optimize performance

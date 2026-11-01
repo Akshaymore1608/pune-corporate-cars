@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "pune_corporate_cars.db"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/admin",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.js"
+    }
+  ]
+}

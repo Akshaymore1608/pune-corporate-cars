@@ -98,11 +98,11 @@ async function runTests() {
     console.log(`📊 TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
     console.log(`====================================================`);
 
-    server.close();
+    if (server && server.close) server.close();
     process.exit(failed === 0 ? 0 : 1);
   } catch (err) {
     console.error('Test suite error:', err);
-    server.close();
+    if (server && server.close) server.close();
     process.exit(1);
   }
 }

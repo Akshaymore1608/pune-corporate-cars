@@ -633,14 +633,19 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start Express Server
-const server = app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🚀 Pune Corporate Cars Platform is LIVE!`);
-  console.log(`🌐 Public Website:  http://localhost:${PORT}`);
-  console.log(`🔐 Admin Dashboard: http://localhost:${PORT}/admin`);
-  console.log(`⚡ API Health:      http://localhost:${PORT}/api/health`);
-  console.log(`====================================================`);
-});
+// Start Express Server (Conditional for Local Daemon vs Serverless on Vercel)
+let server;
+if (!process.env.VERCEL) {
+  server = app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🚀 Pune Corporate Cars Platform is LIVE!`);
+    console.log(`🌐 Public Website:  http://localhost:${PORT}`);
+    console.log(`🔐 Admin Dashboard: http://localhost:${PORT}/admin`);
+    console.log(`⚡ API Health:      http://localhost:${PORT}/api/health`);
+    console.log(`====================================================`);
+  });
+}
 
-module.exports = { app, server };
+module.exports = app;
+module.exports.app = app;
+module.exports.server = server;
