@@ -1,14 +1,17 @@
 /* ==========================================================================
    Pune Corporate Cars - Admin Operations Command Center Stylesheet
+   Theme: Luxury Black, Gold & White
    ========================================================================== */
 
 :root {
-  --admin-bg: #050914;
-  --admin-sidebar: #091124;
-  --admin-card: rgba(13, 23, 48, 0.85);
+  --admin-bg: #080808;
+  --admin-sidebar: #101010;
+  --admin-card: #141414;
   --admin-border: rgba(255, 255, 255, 0.08);
-  --admin-gold: #d4af37;
-  --admin-cyan: #00d2ff;
+  --admin-gold: #c9a24a;
+  --admin-gold-light: #e5c77b;
+  --admin-gold-dim: rgba(201, 162, 74, 0.15);
+  --admin-gold-border: rgba(201, 162, 74, 0.35);
   --admin-green: #10b981;
   --admin-red: #ef4444;
   --admin-yellow: #f59e0b;
@@ -30,7 +33,7 @@ body.admin-body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at center, #0f1f42 0%, #050914 100%);
+  background: radial-gradient(circle at center, #1c1c1c 0%, #080808 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,13 +42,13 @@ body.admin-body {
 }
 
 .admin-login-card {
-  background: rgba(11, 21, 46, 0.95);
-  border: 1px solid var(--admin-gold);
+  background: #101010;
+  border: 1px solid var(--admin-gold-border);
   border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
   max-width: 440px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 30px rgba(201, 162, 74, 0.2);
   text-align: center;
 }
 
@@ -78,11 +81,12 @@ body.admin-body {
   font-size: 1rem;
   font-weight: 800;
   color: #fff;
+  letter-spacing: 0.04em;
 }
 
 .admin-brand span {
   font-size: 0.65rem;
-  color: var(--admin-cyan);
+  color: var(--admin-gold);
   text-transform: uppercase;
 }
 
@@ -97,7 +101,7 @@ body.admin-body {
 .admin-nav-item {
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  color: #94a3b8;
+  color: #a0a0a0;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -108,9 +112,9 @@ body.admin-body {
 }
 
 .admin-nav-item:hover, .admin-nav-item.active {
-  background: rgba(0, 210, 255, 0.12);
+  background: var(--admin-gold-dim);
   color: #fff;
-  border-left: 3px solid var(--admin-cyan);
+  border-left: 3px solid var(--admin-gold);
 }
 
 .admin-sidebar-footer {
@@ -123,6 +127,7 @@ body.admin-body {
   padding: 2rem;
   overflow-y: auto;
   max-height: 100vh;
+  background: var(--admin-bg);
 }
 
 .admin-top-bar {
@@ -148,14 +153,16 @@ body.admin-body {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  transition: all 0.2s ease;
 }
 
 .admin-stat-card.gold-glow {
-  border-color: rgba(212, 175, 55, 0.35);
+  border-color: var(--admin-gold-border);
+  box-shadow: 0 4px 20px rgba(201, 162, 74, 0.15);
 }
 
-.admin-stat-card.cyan-glow {
-  border-color: rgba(0, 210, 255, 0.3);
+.admin-stat-card.silver-glow {
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .admin-stat-label {
@@ -183,7 +190,7 @@ body.admin-body {
 }
 
 .admin-search-input {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   border: 1px solid var(--admin-border);
   border-radius: 8px;
   padding: 0.6rem 1rem;
@@ -193,7 +200,7 @@ body.admin-body {
 }
 
 .admin-search-input:focus {
-  border-color: var(--admin-cyan);
+  border-color: var(--admin-gold);
   outline: none;
 }
 
@@ -218,7 +225,7 @@ body.admin-body {
 }
 
 .admin-table th {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   padding: 0.9rem 1rem;
   color: #94a3b8;
   font-weight: 600;
@@ -248,9 +255,9 @@ body.admin-body {
 }
 
 .status-new {
-  background: rgba(0, 210, 255, 0.15);
-  color: var(--admin-cyan);
-  border: 1px solid rgba(0, 210, 255, 0.3);
+  background: var(--admin-gold-dim);
+  color: var(--admin-gold-light);
+  border: 1px solid var(--admin-gold-border);
 }
 
 .status-quoted {
@@ -284,7 +291,8 @@ body.admin-body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,12 +309,11 @@ body.admin-body {
 }
 
 .admin-modal-box {
-  background: #0d1730;
-  border: 1px solid var(--admin-cyan);
+  background: #101010;
+  border: 1px solid var(--admin-gold-border);
   border-radius: 14px;
   width: 100%;
   max-width: 580px;
   padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(201, 162, 74, 0.2);
 }
-

@@ -149,35 +149,44 @@ async function loadFleet(category = 'all') {
     // Render 15-Model Fleet Cards
     if (grid) {
       grid.innerHTML = allFleet.map(car => `
-        <div class="fleet-card" data-category="${car.category}">
-          <div class="fleet-card-img-wrap">
-            <span class="fleet-badge">${car.category_label}</span>
+        <div class="fleet-card-luxury" data-category="${car.category}">
+          <div class="fleet-img-frame">
+            <span class="fleet-category-badge">${car.category_label}</span>
             <img src="${car.image_url}" alt="${car.model}" class="fleet-real-img" loading="lazy" 
                  onerror="this.src='/assets/cars/mercedes-e220.jpg'">
           </div>
-          <div class="fleet-card-body">
-            <h3 class="fleet-card-title">${car.model}</h3>
-            <div class="fleet-card-category">${car.category_label} • Pan-India Network</div>
+          <div class="fleet-info-body">
+            <div class="fleet-title-row">
+              <h3>${car.model}</h3>
+              <span>${car.category_label} • Corporate Fleet</span>
+            </div>
             
-            <div class="fleet-specs-row">
-              <div class="spec-cell">
+            <div class="fleet-specs-grid">
+              <div class="fleet-spec-cell">
                 <span>👥</span> <strong>${car.passengers} Passengers</strong>
               </div>
-              <div class="spec-cell">
+              <div class="fleet-spec-cell">
+                <span>❄️</span> <strong>AC &amp; Climate Control</strong>
+              </div>
+              <div class="fleet-spec-cell">
                 <span>🧳</span> <strong>${car.luggage}</strong>
               </div>
-            </div>
-
-            <div class="fleet-features-tags">
-              ${car.features.map(f => `<span class="feature-pill">${f}</span>`).join('')}
-            </div>
-
-            <div class="fleet-card-footer">
-              <div style="font-size: 0.85rem; color: var(--accent-cyan); font-weight: 700;">
-                Enquiry Based Rates
+              <div class="fleet-spec-cell">
+                <span>📍</span> <strong>GPS Live Telemetry</strong>
               </div>
-              <button class="btn btn-primary btn-sm" onclick="selectCarForBooking(${car.id})">
-                Enquire Now →
+            </div>
+
+            <div class="fleet-features-pills">
+              ${car.features.map(f => `<span class="pill-luxury">${f}</span>`).join('')}
+            </div>
+
+            <div class="fleet-card-action-bar">
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Rate Structure</div>
+                <div style="font-size: 0.95rem; color: var(--primary-gold); font-weight: 700;">Corporate Rate / Quote</div>
+              </div>
+              <button class="btn-gold" style="padding: 0.5rem 1rem; font-size: 0.82rem;" onclick="selectCarForBooking(${car.id})">
+                Book This Car →
               </button>
             </div>
           </div>
@@ -224,20 +233,18 @@ async function loadPricing() {
     if (!json.success) return;
 
     grid.innerHTML = json.data.map(pkg => `
-      <div class="pricing-card ${pkg.popular ? 'popular' : ''}">
-        ${pkg.popular ? '<span class="popular-badge">Corporate Standard</span>' : ''}
-        <div class="pricing-header">
-          <div class="pricing-tag">${pkg.category_tag}</div>
-          <h3>${pkg.title}</h3>
-        </div>
-        <div class="price-main">${pkg.price_display}</div>
-        <div class="price-condition">${pkg.duration_km} • ${pkg.extra_km_rate}</div>
+      <div class="pricing-card-luxury ${pkg.popular ? 'popular' : ''}">
+        ${pkg.popular ? '<span class="badge-popular-gold">Corporate Standard</span>' : ''}
+        <div class="pricing-cat-tag">${pkg.category_tag}</div>
+        <h3>${pkg.title}</h3>
+        <div class="pricing-price-val">${pkg.price_display}</div>
+        <div class="pricing-duration">${pkg.duration_km} • ${pkg.extra_km_rate}</div>
 
-        <ul class="pricing-specs-list">
+        <ul class="pricing-inclusions-list">
           ${pkg.inclusions.map(inc => `<li>${inc}</li>`).join('')}
         </ul>
 
-        <button class="btn ${pkg.popular ? 'btn-primary' : 'btn-outline'}" onclick="openBookingForPackage('${pkg.title}')">
+        <button class="${pkg.popular ? 'btn-gold' : 'btn-luxury-outline'}" style="width: 100%; margin-top: auto;" onclick="openBookingForPackage('${pkg.title}')">
           Request Quotation →
         </button>
       </div>
@@ -268,20 +275,16 @@ async function loadDirectors() {
 
     const director = json.data[0]; // Sanjay Nalawade
     container.innerHTML = `
-      <div class="founder-profile-card">
-        <div class="founder-avatar-circle">${director.avatar_initials}</div>
-        <div class="founder-content">
+      <div class="founder-card-luxury">
+        <div class="founder-avatar-gold">${director.avatar_initials}</div>
+        <div class="founder-info">
           <h3>${director.name}</h3>
-          <div class="founder-title-badge">${director.title} • Pune Corporate Cars India Pvt. Ltd.</div>
-          <p class="founder-bio">${director.role_description}</p>
-          <div class="founder-contact-meta">
-            <a href="mailto:${director.email}" class="founder-email-link">
-              ✉ ${director.email}
-            </a>
-            <span style="color: var(--text-dim);">|</span>
-            <span style="font-size: 0.88rem; color: #cbd5e1;">📍 Base Location: Pune, Maharashtra, India</span>
-            <span style="color: var(--text-dim);">|</span>
-            <span style="font-size: 0.88rem; color: var(--primary-gold-light); font-weight: 600;">Pan-India Network: 100+ Major Cities</span>
+          <div class="founder-title-gold">${director.title} • Pune Corporate Cars India Pvt. Ltd.</div>
+          <p class="founder-text">${director.role_description}</p>
+          <div class="founder-meta-row">
+            <div>✉ Direct Email: <a href="mailto:${director.email}">${director.email}</a></div>
+            <div>📍 Base Location: <strong>Pune, Maharashtra, India</strong></div>
+            <div>★ Pan-India Footprint: <strong>100+ Major Cities</strong></div>
           </div>
         </div>
       </div>
@@ -304,10 +307,10 @@ async function loadLocations(query = '') {
     allLocations = json.data;
 
     container.innerHTML = allLocations.map(loc => `
-      <div class="location-chip ${loc.is_major ? 'major' : ''}">
+      <div class="location-chip-luxury ${loc.is_major ? 'major' : ''}">
         <div>
-          <div class="location-city">${loc.city}</div>
-          <div class="location-state">${loc.state}</div>
+          <div class="city-name">${loc.city}</div>
+          <div class="state-name">${loc.state}</div>
         </div>
         ${loc.airport_code ? `<span class="airport-code-tag">${loc.airport_code}</span>` : ''}
       </div>
@@ -336,15 +339,13 @@ async function loadTestimonials() {
     if (!json.success) return;
 
     grid.innerHTML = json.data.map(t => `
-      <div class="testimonial-card">
-        <div style="color: var(--primary-gold-light); font-size: 1.1rem; margin-bottom: 0.75rem;">★★★★★</div>
-        <div class="testimonial-quote">“${t.comment}”</div>
-        <div class="testimonial-author-row">
-          <div class="author-info">
-            <h4>${t.author_name}</h4>
-            <p>${t.designation} — ${t.company}</p>
-            <div style="font-size: 0.75rem; color: var(--text-dim);">Verified Client Reference • ${t.city}</div>
-          </div>
+      <div class="testimonial-card-luxury">
+        <div class="star-rating-gold">★★★★★</div>
+        <div class="testimonial-quote-text">“${t.comment}”</div>
+        <div class="testimonial-author-box">
+          <h4>${t.author_name}</h4>
+          <p>${t.designation} — ${t.company}</p>
+          <div class="city-sub">Verified Client Reference • ${t.city}</div>
         </div>
       </div>
     `).join('');
@@ -364,11 +365,11 @@ async function loadBlogs() {
     if (!json.success) return;
 
     grid.innerHTML = json.data.map(b => `
-      <div class="blog-card">
-        <div class="blog-cat-tag">${b.category}</div>
+      <div class="blog-card-luxury">
+        <div class="blog-tag-gold">${b.category}</div>
         <h3>${b.title}</h3>
         <p>${b.summary}</p>
-        <div class="blog-card-meta">
+        <div class="blog-footer-meta">
           <span>⏱ ${b.read_time}</span>
           <span>📅 ${b.date_published}</span>
         </div>
@@ -548,27 +549,27 @@ function showConfirmationModal(bookingRef, data) {
   }
 
   confModal.innerHTML = `
-    <div class="modal-content" style="text-align: center;">
-      <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
-      <h2 style="color: #fff; margin-bottom: 0.5rem;">Corporate Enquiry Registered!</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-        Your requirement has been logged into our central dispatch database.
+    <div class="modal-content-luxury" style="text-align: center;">
+      <div style="font-size: 2.8rem; margin-bottom: 0.75rem; color: var(--primary-gold);">✓</div>
+      <h2 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.45rem;">Corporate Enquiry Registered!</h2>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
+        Your requirement has been logged into our central dispatch operations database.
       </p>
 
-      <div style="background: rgba(0, 229, 255, 0.08); border: 1px solid var(--border-cyan); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
-        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Enquiry Reference Number</div>
-        <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-gold-light); letter-spacing: 0.05em;">${bookingRef}</div>
-        <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.5rem;">
+      <div style="background: var(--primary-gold-dim); border: 1px solid var(--primary-gold-border); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+        <div style="font-size: 0.78rem; color: var(--primary-gold); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Enquiry Reference Number</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #ffffff; letter-spacing: 0.05em; margin: 0.35rem 0;">${bookingRef}</div>
+        <div style="font-size: 0.85rem; color: var(--text-silver);">
           Vehicle: <strong>${data.vehicle_name}</strong> | Service: <strong>${data.service_type}</strong>
         </div>
       </div>
 
-      <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem;">
-        Our corporate travel team will review and share a proposal shortly. For immediate assistance, contact our 24x7 helpdesk at <strong>+91 9822943334</strong>.
+      <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem; line-height: 1.5;">
+        Our corporate travel team will review and share a proposal shortly. For immediate priority dispatch, contact our 24×7 helpdesk at <strong>+91 9822943334</strong>.
       </p>
 
-      <button class="btn btn-primary" style="width: 100%;" onclick="document.getElementById('confirmModal').classList.remove('active')">
-        Close
+      <button class="btn-gold" style="width: 100%; padding: 0.85rem;" onclick="document.getElementById('confirmModal').classList.remove('active')">
+        Close Window
       </button>
     </div>
   `;

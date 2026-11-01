@@ -177,7 +177,7 @@ async function loadBookings() {
         <td>
           <strong>${b.customer_name}</strong>
           <div style="font-size: 0.78rem; color: #94a3b8;">${b.company_name || 'Individual'}</div>
-          <div style="font-size: 0.75rem; color: var(--admin-cyan);">${b.phone}</div>
+          <div style="font-size: 0.75rem; color: var(--admin-gold-light);">${b.phone}</div>
         </td>
         <td>
           <div>${b.service_type}</div>
@@ -231,7 +231,7 @@ async function loadEnquiries() {
     tbody.innerHTML = currentEnquiries.map(e => `
       <tr>
         <td>
-          <strong style="color: var(--admin-cyan);">${e.enquiry_ref}</strong>
+          <strong style="color: var(--admin-gold);">${e.enquiry_ref}</strong>
           <div style="font-size: 0.72rem; color: #94a3b8;">${e.created_at || ''}</div>
         </td>
         <td>
