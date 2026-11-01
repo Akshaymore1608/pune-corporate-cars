@@ -196,7 +196,7 @@ function initDatabase() {
     insertFleet.run(...item);
   }
 
-  // Clear & Re-seed Directors strictly based on PDF
+  // Clear & Re-seed Directors strictly based on PDF and verified MCA governance records
   db.exec('DELETE FROM directors;');
   const insertDirector = db.prepare(`
     INSERT INTO directors (name, title, role_description, email, experience, avatar_initials, sort_order)
@@ -205,12 +205,22 @@ function initDatabase() {
 
   insertDirector.run(
     'Sanjay Nalawade',
-    'Director & Founder',
-    'Founder of Pune Corporate Cars India Private Limited. Dedicated to professional chauffeur-driven transport, corporate mobility excellence, punctuality guarantees, and safety governance across Pune and Pan-India networks.',
+    'Founder & Managing Director',
+    'Founder and Managing Director of Pune Corporate Cars India Private Limited. Dedicated to professional chauffeur-driven transport, corporate mobility excellence, punctuality guarantees, and safety governance across Pune and Pan-India networks.',
     'sanjay.nalawade@punecorporatecars.com',
     'Founder & Managing Director',
     'SN',
     1
+  );
+
+  insertDirector.run(
+    'Prashant Nalawade',
+    'Director & Operations Head',
+    'Key Director and Operations Leader of Pune Corporate Cars India Private Limited. Spearheading 24×7 dispatch operations, chauffeur training protocols, vehicle maintenance governance, and Pan-India partner coordination across 100+ cities.',
+    'prashant.nalawade@punecorporatecars.com',
+    'Key Director & Operations Head',
+    'PN',
+    2
   );
 
   // Clear & Re-seed Testimonials strictly based on PDF Page 5 & 6 names

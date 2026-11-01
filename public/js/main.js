@@ -264,7 +264,7 @@ window.openBookingForPackage = function (packageTitle) {
   });
 };
 
-// 3. Load Directors (Founder & MD Sanjay Nalawade from PDF)
+// 3. Load Key Directors (Both Sanjay Nalawade & Prashant Nalawade)
 async function loadDirectors() {
   const container = document.getElementById('directorsContainer');
   if (!container) return;
@@ -274,20 +274,23 @@ async function loadDirectors() {
     const json = await res.json();
     if (!json.success || !json.data.length) return;
 
-    const director = json.data[0]; // Sanjay Nalawade
     container.innerHTML = `
-      <div class="founder-card-luxury">
-        <div class="founder-avatar-gold">${director.avatar_initials}</div>
-        <div class="founder-info">
-          <h3>${director.name}</h3>
-          <div class="founder-title-gold">${director.title} • Pune Corporate Cars India Pvt. Ltd.</div>
-          <p class="founder-text">${director.role_description}</p>
-          <div class="founder-meta-row">
-            <div>✉ Direct Email: <a href="mailto:${director.email}">${director.email}</a></div>
-            <div>📍 Base Location: <strong>Pune, Maharashtra, India</strong></div>
-            <div>★ Pan-India Footprint: <strong>100+ Major Cities</strong></div>
+      <div class="directors-luxury-grid">
+        ${json.data.map(director => `
+          <div class="founder-card-luxury">
+            <div class="founder-avatar-gold">${director.avatar_initials}</div>
+            <div class="founder-info">
+              <h3>${director.name}</h3>
+              <div class="founder-title-gold">${director.title} • Pune Corporate Cars India Pvt. Ltd.</div>
+              <p class="founder-text">${director.role_description}</p>
+              <div class="founder-meta-row">
+                <div>✉ Direct Email: <a href="mailto:${director.email}">${director.email}</a></div>
+                <div>📍 Base Location: <strong>Pune, Maharashtra, India</strong></div>
+                <div>★ Corporate Leadership: <strong>${director.experience || 'Key Director'}</strong></div>
+              </div>
+            </div>
           </div>
-        </div>
+        `).join('')}
       </div>
     `;
   } catch (err) {
@@ -295,7 +298,7 @@ async function loadDirectors() {
   }
 }
 
-// 4. Load Pan-India Locations (Deduplicated 50+ Cities from PDF)
+// 4. Load Pan-India Locations (Grouped State-Wise per Client Requirement)
 async function loadLocations(query = '') {
   const container = document.getElementById('locationsGrid');
   if (!container) return;
@@ -307,15 +310,57 @@ async function loadLocations(query = '') {
 
     allLocations = json.data;
 
-    container.innerHTML = allLocations.map(loc => `
-      <div class="location-chip-luxury ${loc.is_major ? 'major' : ''}">
-        <div>
-          <div class="city-name">${loc.city}</div>
-          <div class="state-name">${loc.state}</div>
+    if (allLocations.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 3rem; color: var(--text-muted); grid-column: 1 / -1; width: 100%;">
+          <p>No locations found matching "<strong>${query}</strong>". Contact our 24×7 helpdesk (+91 9822943334) for custom city routes.</p>
         </div>
-        ${loc.airport_code ? `<span class="airport-code-tag">${loc.airport_code}</span>` : ''}
-      </div>
-    `).join('');
+      `;
+      return;
+    }
+
+    // Group locations by State
+    const stateGroups = {};
+    allLocations.forEach(loc => {
+      const state = loc.state || 'Other Regions';
+      if (!stateGroups[state]) stateGroups[state] = [];
+      stateGroups[state].push(loc);
+    });
+
+    // Sort states with Maharashtra first (Corporate HQ), then alphabetically
+    const sortedStates = Object.keys(stateGroups).sort((a, b) => {
+      if (a.toLowerCase().includes('maharashtra')) return -1;
+      if (b.toLowerCase().includes('maharashtra')) return 1;
+      return a.localeCompare(b);
+    });
+
+    container.innerHTML = sortedStates.map(state => {
+      const cities = stateGroups[state];
+      const isHqState = state.toLowerCase().includes('maharashtra');
+      return `
+        <div class="state-network-card ${isHqState ? 'state-card-hq' : ''}">
+          <div class="state-card-header">
+            <div class="state-title-wrap">
+              <span class="state-icon">${isHqState ? '⭐' : '📍'}</span>
+              <h4>${state} ${isHqState ? '<span class="hq-badge">HQ State</span>' : ''}</h4>
+            </div>
+            <span class="state-count-pill">${cities.length} ${cities.length === 1 ? 'City' : 'Cities'}</span>
+          </div>
+
+          <div class="state-cities-grid">
+            ${cities.map(c => `
+              <div class="city-chip-luxury ${c.is_major ? 'major' : ''}" title="${c.city}, ${c.state}">
+                <div class="city-main-info">
+                  <span class="city-dot"></span>
+                  <span class="city-title">${c.city}</span>
+                </div>
+                ${c.airport_code ? `<span class="city-airport-code">${c.airport_code}</span>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
 
     const searchInput = document.getElementById('locationSearchInput');
     if (searchInput && !searchInput.dataset.bound) {
