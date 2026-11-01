@@ -51,8 +51,8 @@
           </svg>
         </div>
         <div class="brand-text-nav">
-          <h2>PCC <span>INDIA</span></h2>
-          <span class="brand-sub">Corporate Cars Pvt. Ltd.</span>
+          <h2>PUNE CORPORATE <span>CARS</span></h2>
+          <span class="brand-sub">India Private Limited</span>
         </div>
       </a>
 
@@ -163,49 +163,120 @@
     </div>
   </div>
 
-  <!-- 3. HERO SECTION (FULL-SCREEN LUXURY AUTOMOTIVE BACKGROUND) -->
+  <!-- 3. HERO SECTION (REFERENCE DESIGN: LUXURY CAR SHOWCASE & FLOATING CONSOLE) -->
   <section class="hero-luxury-fullscreen" id="home">
     <div class="hero-luxury-overlay"></div>
     <div class="container hero-luxury-inner">
       <div class="hero-luxury-badge">
-        <span class="star-icon">★</span> Pune Corporate Cars India Pvt. Ltd. • ISO 9001:2015 & ISO 14001:2015
+        <span class="star-icon">★</span> Pune Corporate Cars India Pvt. Ltd. • ISO 9001:2015 &amp; ISO 14001:2015
       </div>
 
+      <!-- Main Name: Pune Corporate Cars -->
       <h1 class="hero-main-title">
-        PREMIUM <span class="highlight-gold">CORPORATE TRAVEL</span>
+        PUNE <span class="highlight-gold">CORPORATE CARS</span>
       </h1>
 
       <div class="hero-subtitle-text">
-        Experience Excellence. Travel with Confidence.
+        Having Luxury Cars For Every Corporate Journey!
       </div>
 
       <p class="hero-description-text">
-        From executive travel and employee transportation to airport transfers, experience reliable and comfortable chauffeur-driven journeys across India.
+        From executive travel and employee transportation to airport transfers, experience reliable and comfortable chauffeur-driven journeys across 100+ cities in India.
       </p>
 
-      <div class="hero-button-group">
-        <button class="btn-gold" onclick="openBookingModal({ service_type: 'Corporate Car Rental' })">
-          Book Your Ride →
-        </button>
-        <a href="#services" class="btn-luxury-outline">
-          Explore Our Services
-        </a>
+      <!-- Car Category Selector Pills from Reference Image -->
+      <div class="hero-car-categories">
+        <button type="button" class="hero-cat-pill active" onclick="filterFleetHero('all')">★ All Fleet (15)</button>
+        <button type="button" class="hero-cat-pill" onclick="filterFleetHero('sedan')">Sedans</button>
+        <button type="button" class="hero-cat-pill" onclick="filterFleetHero('mpv')">MPVs</button>
+        <button type="button" class="hero-cat-pill" onclick="filterFleetHero('premium_mpv')">Hybrid MPVs</button>
+        <button type="button" class="hero-cat-pill" onclick="filterFleetHero('luxury_sedan')">Luxury Sedans</button>
+        <button type="button" class="hero-cat-pill" onclick="filterFleetHero('suv')">SUVs</button>
       </div>
 
-      <div class="hero-stats-bar">
-        <div class="hero-stat-box">
-          <h3>15+</h3>
-          <p>Luxury Fleet Models</p>
-        </div>
-        <div class="hero-stat-box">
-          <h3>100+</h3>
-          <p>Pan-India Major Cities</p>
-        </div>
-        <div class="hero-stat-box">
-          <h3>24×7</h3>
-          <p>Dedicated Operations Desk</p>
+      <!-- Centerpiece Car Showcase with Dark Studio Ground & Floating Callout (Directly matching Reference Image) -->
+      <div class="hero-car-showcase">
+        <div class="hero-car-image-wrap">
+          <img src="/assets/cars/mercedes-amg-dark.jpg" alt="Pune Corporate Cars - Luxury Executive Fleet" class="hero-showcase-car-img" id="heroCarImg" onerror="this.src='/assets/cars/mercedes-e220.jpg'">
+          
+          <!-- Floating Annotation Callout (from reference image) -->
+          <div class="hero-floating-callout">
+            <span class="callout-dot"></span>
+            <span>Affordable, Reliable, and Available At Your Fingertips!</span>
+          </div>
         </div>
       </div>
+
+      <!-- Horizontal Floating Quick Booking Console (Directly matching Reference Image) -->
+      <div class="hero-floating-booking-bar">
+        <div class="booking-bar-tabs">
+          <button type="button" class="bar-tab-btn active" id="tabChauffeur" onclick="setBookingTab('chauffeur')">● With Professional Chauffeur</button>
+          <button type="button" class="bar-tab-btn" id="tabCorporate" onclick="setBookingTab('corporate')">● Corporate Employee Mobility</button>
+          <button type="button" class="bar-tab-btn" id="tabOutstation" onclick="setBookingTab('outstation')">● Airport &amp; Outstation</button>
+        </div>
+
+        <form id="heroQuickBookForm" class="hero-booking-form-grid" onsubmit="handleHeroQuickBooking(event)">
+          <div class="hero-input-field">
+            <label>Pickup Location</label>
+            <input type="text" id="heroPickup" name="pickup_city" value="Pune, Maharashtra" required placeholder="e.g. Pune / Hinjewadi / Airport">
+          </div>
+          <div class="hero-input-field">
+            <label>Destination / Return</label>
+            <input type="text" id="heroDestination" name="destination" value="Mumbai Airport T2" required placeholder="Destination City or Airport">
+          </div>
+          <div class="hero-input-field">
+            <label>Pick-Up Date</label>
+            <input type="date" id="heroDate" name="pickup_date" required>
+          </div>
+          <div class="hero-input-field">
+            <label>Service Type</label>
+            <select id="heroService" name="service_type" required>
+              <option value="Corporate Car Rental">Corporate Car Rental</option>
+              <option value="Airport Transfers">Airport Transfers</option>
+              <option value="Employee Transport Solutions">Employee Transport Solutions</option>
+              <option value="Car Rental Services">Car Rental Services</option>
+              <option value="Conferences &amp; Delegations">Conferences &amp; Delegations</option>
+              <option value="Event Transportation">Event Transportation</option>
+              <option value="Hotel Travel Desk">Hotel Travel Desk</option>
+              <option value="Wedding Car Rental">Wedding Car Rental</option>
+              <option value="Travel Partners Program">Travel Partners Program</option>
+              <option value="Pan India Car rental services">Pan India Car rental services</option>
+              <option value="Monthly/Long Term Rentals">Monthly/Long Term Rentals</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-gold hero-booking-submit-btn">
+            Book Ride →
+          </button>
+        </form>
+      </div>
+
+      <!-- Three Clean Feature Highlights below the bar (from reference image) -->
+      <div class="hero-bottom-features">
+        <div class="hero-feature-item">
+          <div class="feature-icon">📞</div>
+          <div>
+            <strong>24×7 Operations Desk</strong>
+            <span>Instant Dispatch: +91 9822943334</span>
+          </div>
+        </div>
+
+        <div class="hero-feature-item">
+          <div class="feature-icon">👔</div>
+          <div>
+            <strong>Verified Professional Chauffeurs</strong>
+            <span>Uniformed, Police-Vetted &amp; Courteous</span>
+          </div>
+        </div>
+
+        <div class="hero-feature-item">
+          <div class="feature-icon">🗺️</div>
+          <div>
+            <strong>Pan-India 100+ Major Cities</strong>
+            <span>Seamless Ground Mobility Coordination</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

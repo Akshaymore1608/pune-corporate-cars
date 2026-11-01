@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordion();
   initQuickEnquiryForm();
   initBookingModal();
+  initHeroConsole();
 });
 
 // Toast Notifications
@@ -591,3 +592,60 @@ function initFaqAccordion() {
     }
   });
 }
+
+// 10. Hero Floating Console (From Reference Image)
+function initHeroConsole() {
+  const heroDate = document.getElementById('heroDate');
+  if (heroDate) {
+    const today = new Date().toISOString().split('T')[0];
+    heroDate.value = today;
+    heroDate.min = today;
+  }
+}
+
+window.filterFleetHero = function (cat) {
+  document.querySelectorAll('.hero-cat-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${cat}'`));
+  });
+
+  loadFleet(cat);
+
+  document.querySelectorAll('.fleet-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.category === cat);
+  });
+
+  const fleetSec = document.getElementById('fleet');
+  if (fleetSec) {
+    fleetSec.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+window.setBookingTab = function (tab) {
+  document.querySelectorAll('.bar-tab-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(
+    tab === 'chauffeur' ? 'tabChauffeur' :
+    tab === 'corporate' ? 'tabCorporate' : 'tabOutstation'
+  );
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const heroService = document.getElementById('heroService');
+  if (heroService) {
+    if (tab === 'chauffeur') heroService.value = 'Corporate Car Rental';
+    else if (tab === 'corporate') heroService.value = 'Employee Transport Solutions';
+    else if (tab === 'outstation') heroService.value = 'Airport Transfers';
+  }
+};
+
+window.handleHeroQuickBooking = function (e) {
+  e.preventDefault();
+  const form = document.getElementById('heroQuickBookForm');
+  if (!form) return;
+
+  const formData = new FormData(form);
+  openBookingModal({
+    pickup_city: formData.get('pickup_city'),
+    destination: formData.get('destination'),
+    pickup_date: formData.get('pickup_date'),
+    service_type: formData.get('service_type')
+  });
+};

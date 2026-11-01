@@ -111,7 +111,8 @@ body.admin-body {
   transition: all 0.2s ease;
 }
 
-.admin-nav-item:hover, .admin-nav-item.active {
+.admin-nav-item:hover,
+.admin-nav-item.active {
   background: var(--admin-gold-dim);
   color: #fff;
   border-left: 3px solid var(--admin-gold);

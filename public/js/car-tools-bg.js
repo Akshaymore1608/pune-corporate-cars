@@ -1,10 +1,11 @@
 /**
- * Pune Corporate Cars - Automotive Engineering & Car Tools Background Canvas
- * Redesigned in Luxury Black, Gold & Silver Palette:
+ * Pune Corporate Cars - Luxury Automotive Background Canvas
+ * Theme: Premium Black, Gold & Silver Automotive Silhouette & Constellation
+ * Palette:
  * - Luxury Gold: #C9A24A
- * - Light Gold: #E5C77B
+ * - Light Gold:  #E5C77B
  * - Silver Grey: #D9D9D9
- * - Subtle ambient opacity for maximum luxury legibility
+ * - Deep Black:  #080808
  */
 
 (function () {
@@ -20,7 +21,7 @@
   window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    initElements();
+    initParticles();
   });
 
   window.addEventListener('mousemove', (e) => {
@@ -33,254 +34,180 @@
     mouse.active = false;
   });
 
-  const elements = [];
   const particles = [];
+  const PARTICLE_COUNT = 45;
 
-  function rand(min, max) {
-    return Math.random() * (max - min) + min;
+  function initParticles() {
+    particles.length = 0;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.35,
+        radius: Math.random() * 2 + 0.8,
+        color: Math.random() > 0.4 ? '#C9A24A' : '#D9D9D9',
+        alpha: Math.random() * 0.45 + 0.15
+      });
+    }
   }
 
-  // Draw Gears with Luxury Gold / Silver styling
-  function drawGear(ctx, x, y, radius, teeth, angle, color, strokeWidth = 1.2) {
+  // Draw Sleek Aerodynamic Luxury Car Silhouette Symbol
+  function drawCarSilhouette(x, y, scale, alpha) {
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = strokeWidth;
+    ctx.scale(scale, scale);
+    ctx.globalAlpha = alpha;
 
-    const step = (Math.PI * 2) / teeth;
+    // Subtle Ground Reflection Horizon
+    const grad = ctx.createLinearGradient(-350, 0, 350, 0);
+    grad.addColorStop(0, 'rgba(201, 162, 74, 0)');
+    grad.addColorStop(0.5, 'rgba(229, 199, 123, 0.45)');
+    grad.addColorStop(1, 'rgba(201, 162, 74, 0)');
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    for (let i = 0; i < teeth; i++) {
-      const a = i * step;
-      const rInner = radius * 0.84;
-      const rOuter = radius * 1.1;
+    ctx.moveTo(-380, 75);
+    ctx.lineTo(380, 75);
+    ctx.stroke();
 
-      const p1x = Math.cos(a) * rInner;
-      const p1y = Math.sin(a) * rInner;
-      const p2x = Math.cos(a + step * 0.2) * rOuter;
-      const p2y = Math.sin(a + step * 0.2) * rOuter;
-      const p3x = Math.cos(a + step * 0.5) * rOuter;
-      const p3y = Math.sin(a + step * 0.5) * rOuter;
-      const p4x = Math.cos(a + step * 0.7) * rInner;
-      const p4y = Math.sin(a + step * 0.7) * rInner;
+    // Streamlined Roofline and Hood Silhouette
+    ctx.strokeStyle = '#E5C77B';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    // Front splitter
+    ctx.moveTo(-290, 65);
+    ctx.bezierCurveTo(-260, 60, -220, 50, -180, 35);
+    // Hood to windshield
+    ctx.bezierCurveTo(-140, 20, -100, -10, -50, -45);
+    // Roofline apex
+    ctx.bezierCurveTo(0, -65, 60, -65, 110, -45);
+    // Fastback rear slope
+    ctx.bezierCurveTo(160, -20, 210, 20, 250, 40);
+    // Ducktail spoiler & rear bumper
+    ctx.bezierCurveTo(275, 48, 290, 60, 285, 70);
+    ctx.stroke();
 
-      if (i === 0) ctx.moveTo(p1x, p1y);
-      else ctx.lineTo(p1x, p1y);
-      ctx.lineTo(p2x, p2y);
-      ctx.lineTo(p3x, p3y);
-      ctx.lineTo(p4x, p4y);
-    }
+    // Secondary Shoulder Flow Line
+    ctx.strokeStyle = 'rgba(217, 217, 217, 0.55)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(-240, 48);
+    ctx.bezierCurveTo(-160, 35, -40, 18, 60, 20);
+    ctx.bezierCurveTo(140, 22, 210, 38, 260, 52);
+    ctx.stroke();
+
+    // Side Window Coupe Glass
+    ctx.strokeStyle = 'rgba(201, 162, 74, 0.65)';
+    ctx.fillStyle = 'rgba(201, 162, 74, 0.05)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(-45, -35);
+    ctx.bezierCurveTo(-10, -52, 50, -52, 95, -35);
+    ctx.bezierCurveTo(115, -20, 110, 0, 85, 0);
+    ctx.bezierCurveTo(10, -5, -40, 0, -55, 0);
+    ctx.bezierCurveTo(-65, -15, -60, -28, -45, -35);
     ctx.closePath();
+    ctx.fill();
     ctx.stroke();
 
-    // Inner axle ring
+    // Front Headlight Beam (Glowing LED Line)
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.42, 0, Math.PI * 2);
+    ctx.moveTo(-270, 52);
+    ctx.lineTo(-210, 42);
     ctx.stroke();
 
-    // Center hub hole
+    // Rear OLED Light Line
+    ctx.strokeStyle = '#C9A24A';
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.16, 0, Math.PI * 2);
+    ctx.moveTo(255, 45);
+    ctx.lineTo(280, 54);
     ctx.stroke();
 
-    // Spokes
-    for (let s = 0; s < 4; s++) {
-      ctx.beginPath();
-      ctx.rotate(Math.PI / 2);
-      ctx.moveTo(radius * 0.16, 0);
-      ctx.lineTo(radius * 0.42, 0);
-      ctx.stroke();
-    }
+    // Front Wheel Assembly
+    drawWheel(-160, 72, 38);
+    // Rear Wheel Assembly
+    drawWheel(180, 72, 38);
+
+    // Rocker Panel between wheels
+    ctx.strokeStyle = '#C9A24A';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-122, 72);
+    ctx.lineTo(142, 72);
+    ctx.stroke();
 
     ctx.restore();
   }
 
-  // Draw Precision Wrench
-  function drawWrench(ctx, x, y, length, angle, color) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.strokeStyle = color;
-    ctx.fillStyle = 'rgba(8, 8, 8, 0.3)';
-    ctx.lineWidth = 1.2;
-
-    const headR = length * 0.22;
-    const shaftW = length * 0.12;
-    const halfL = length / 2;
-
+  function drawWheel(wx, wy, r) {
+    // Outer tire / arch
+    ctx.strokeStyle = '#C9A24A';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    // Open-end head
-    ctx.arc(-halfL, 0, headR, 0.5, 5.8, false);
-    ctx.lineTo(halfL - headR * 0.9, shaftW / 2);
-    ctx.arc(halfL, 0, headR * 0.85, 0.7, 5.6, false);
-    ctx.lineTo(-halfL + headR * 0.9, -shaftW / 2);
-    ctx.closePath();
+    ctx.arc(wx, wy, r, 0, Math.PI * 2);
     ctx.stroke();
 
+    // Inner rim
+    ctx.strokeStyle = '#d9d9d9';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.arc(halfL, 0, headR * 0.45, 0, Math.PI * 2);
+    ctx.arc(wx, wy, r * 0.65, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.restore();
-  }
-
-  // Draw Luxury Speedometer Dial
-  function drawGauge(ctx, x, y, radius, needleAngle, color, accentColor) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.2;
-
+    // Hub center
+    ctx.fillStyle = '#C9A24A';
     ctx.beginPath();
-    ctx.arc(0, 0, radius, Math.PI * 0.75, Math.PI * 2.25);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.86, Math.PI * 0.75, Math.PI * 2.25);
-    ctx.strokeStyle = 'rgba(217, 217, 217, 0.08)';
-    ctx.stroke();
-
-    const totalTicks = 16;
-    for (let t = 0; t <= totalTicks; t++) {
-      const a = Math.PI * 0.75 + (t / totalTicks) * (Math.PI * 1.5);
-      ctx.strokeStyle = color;
-      ctx.lineWidth = t % 4 === 0 ? 1.8 : 1;
-
-      const inner = t % 4 === 0 ? radius * 0.72 : radius * 0.8;
-      const x1 = Math.cos(a) * inner;
-      const y1 = Math.sin(a) * inner;
-      const x2 = Math.cos(a) * (radius * 0.95);
-      const y2 = Math.sin(a) * (radius * 0.95);
-
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
-    }
-
-    // Gauge Center Pivot
-    ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.12, 0, Math.PI * 2);
-    ctx.fillStyle = accentColor;
+    ctx.arc(wx, wy, r * 0.22, 0, Math.PI * 2);
     ctx.fill();
 
-    // Needle
-    ctx.save();
-    ctx.rotate(needleAngle);
-    ctx.strokeStyle = accentColor;
-    ctx.lineWidth = 1.6;
-    ctx.beginPath();
-    ctx.moveTo(-radius * 0.15, 0);
-    ctx.lineTo(radius * 0.76, 0);
-    ctx.stroke();
-    ctx.restore();
-
-    ctx.restore();
-  }
-
-  // Draw Piston Vector
-  function drawPiston(ctx, x, y, size, angle, color) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.2;
-
-    const w = size * 0.6;
-    const h = size * 0.7;
-
-    ctx.strokeRect(-w / 2, -h / 2, w, h);
-
-    for (let r = 0; r < 3; r++) {
-      const ry = -h / 2 + 6 + r * 6;
+    // Spokes
+    ctx.strokeStyle = 'rgba(229, 199, 123, 0.65)';
+    ctx.lineWidth = 1;
+    for (let a = 0; a < 5; a++) {
+      const angle = (a * Math.PI * 2) / 5;
       ctx.beginPath();
-      ctx.moveTo(-w / 2 - 2, ry);
-      ctx.lineTo(-w / 2, ry);
-      ctx.moveTo(w / 2, ry);
-      ctx.lineTo(w / 2 + 2, ry);
+      ctx.moveTo(wx, wy);
+      ctx.lineTo(wx + Math.cos(angle) * r, wy + Math.sin(angle) * r);
       ctx.stroke();
     }
-
-    ctx.beginPath();
-    ctx.arc(0, 0, w * 0.18, 0, Math.PI * 2);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(-w * 0.1, h / 2);
-    ctx.lineTo(-w * 0.15, h / 2 + size * 0.8);
-    ctx.arc(0, h / 2 + size * 0.8, w * 0.25, 0, Math.PI);
-    ctx.lineTo(w * 0.1, h / 2);
-    ctx.stroke();
-
-    ctx.restore();
   }
 
-  function initElements() {
-    elements.length = 0;
-    particles.length = 0;
-
-    const count = Math.min(16, Math.max(8, Math.floor((width * height) / 110000)));
-
-    for (let i = 0; i < count; i++) {
-      const type = i % 4;
-      elements.push({
-        type: type,
-        x: rand(60, width - 60),
-        y: rand(80, height - 80),
-        vx: rand(-0.12, 0.12),
-        vy: rand(-0.12, 0.12),
-        size: type === 0 ? rand(35, 70) : type === 1 ? rand(60, 100) : type === 2 ? rand(45, 75) : rand(40, 65),
-        angle: rand(0, Math.PI * 2),
-        angularVelocity: rand(-0.004, 0.004),
-        teeth: Math.floor(rand(10, 16)),
-        baseColor: i % 2 === 0 ? 'rgba(201, 162, 74, 0.12)' : 'rgba(217, 217, 217, 0.08)',
-        glowColor: i % 2 === 0 ? '#C9A24A' : '#E5C77B'
-      });
-    }
-
-    for (let p = 0; p < 40; p++) {
-      particles.push({
-        x: rand(0, width),
-        y: rand(0, height),
-        vx: rand(-0.25, 0.25),
-        vy: rand(-0.18, 0.18),
-        r: rand(1, 2.2),
-        color: Math.random() > 0.5 ? 'rgba(201, 162, 74, 0.25)' : 'rgba(217, 217, 217, 0.18)'
-      });
-    }
-  }
-
-  initElements();
+  initParticles();
 
   let time = 0;
   function animate() {
-    requestAnimationFrame(animate);
-    time += 0.012;
-
+    time += 0.015;
     ctx.clearRect(0, 0, width, height);
 
-    // Subtle Grid in background
-    ctx.save();
-    ctx.strokeStyle = 'rgba(217, 217, 217, 0.02)';
-    ctx.lineWidth = 1;
-    const gridSpacing = 90;
-    for (let x = 0; x < width; x += gridSpacing) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-    for (let y = 0; y < height; y += gridSpacing) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-    ctx.restore();
+    // Parallax offset from mouse
+    const offsetX = mouse.active ? (mouse.x - width / 2) * 0.04 : 0;
+    const offsetY = mouse.active ? (mouse.y - height / 2) * 0.04 : 0;
 
-    // Render particles
+    // Draw Subtle Ambient Connecting Constellation Lines
     for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.strokeStyle = '#C9A24A';
+          ctx.globalAlpha = (1 - dist / 130) * 0.12;
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw Particle Nodes
+    particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
 
@@ -290,65 +217,26 @@
       if (p.y > height) p.y = 0;
 
       ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fill();
+    });
 
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dx = p.x - p2.x;
-        const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100) {
-          ctx.strokeStyle = `rgba(201, 162, 74, ${0.06 * (1 - dist / 100)})`;
-          ctx.lineWidth = 0.6;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
-      }
+    // Draw Primary Luxury Car Symbol Watermark (Upper Right / Center Ambient)
+    const carX = width * 0.72 + offsetX;
+    const carY = Math.min(height * 0.38, 380) + offsetY + Math.sin(time) * 4;
+    const carScale = Math.max(0.65, Math.min(1.1, width / 1400));
+    drawCarSilhouette(carX, carY, carScale, 0.28);
+
+    // Draw Secondary Faint Accent Symbol (Lower Left Ambient)
+    if (width > 800) {
+      const carX2 = width * 0.2 - offsetX * 0.5;
+      const carY2 = height * 0.82 - offsetY * 0.5 + Math.cos(time) * 3;
+      drawCarSilhouette(carX2, carY2, carScale * 0.65, 0.16);
     }
 
-    // Render Tools
-    for (let el of elements) {
-      el.x += el.vx;
-      el.y += el.vy;
-      el.angle += el.angularVelocity;
-
-      let color = el.baseColor;
-      if (mouse.active) {
-        const dx = mouse.x - el.x;
-        const dy = mouse.y - el.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 200) {
-          const intensity = 1 - dist / 200;
-          color = `rgba(201, 162, 74, ${0.15 + intensity * 0.35})`;
-          el.angle += el.angularVelocity * 2;
-        }
-      }
-
-      if (el.x < -60) el.x = width + 60;
-      if (el.x > width + 60) el.x = -60;
-      if (el.y < -60) el.y = height + 60;
-      if (el.y > height + 60) el.y = -60;
-
-      switch (el.type) {
-        case 0:
-          drawGear(ctx, el.x, el.y, el.size, el.teeth, el.angle, color);
-          break;
-        case 1:
-          drawWrench(ctx, el.x, el.y, el.size, el.angle, color);
-          break;
-        case 2:
-          const needleAngle = Math.PI * 0.75 + Math.sin(time + el.x * 0.01) * 1.1 + 0.7;
-          drawGauge(ctx, el.x, el.y, el.size, needleAngle, color, el.glowColor);
-          break;
-        case 3:
-          drawPiston(ctx, el.x, el.y, el.size, el.angle, color);
-          break;
-      }
-    }
+    requestAnimationFrame(animate);
   }
 
   animate();
