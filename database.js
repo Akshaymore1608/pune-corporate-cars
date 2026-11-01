@@ -270,7 +270,7 @@ function initDatabase() {
     insertBlog.run(...b);
   }
 
-  // Clear & Re-seed Pricing strictly based on PDF Page 3 services & Page 7-9 guidelines
+  // Clear & Re-seed Pricing strictly based on PDF Page 3 services & Photo features
   db.exec('DELETE FROM pricing_packages;');
   const insertPackage = db.prepare(`
     INSERT INTO pricing_packages (title, category_tag, price_display, duration_km, extra_km_rate, extra_hr_rate, description, inclusions, popular)
@@ -296,53 +296,53 @@ function initDatabase() {
       1
     ],
     [
-      'Airport Transfers',
-      'Airport Mobility',
+      'Employee Transport Solutions',
+      'Staff Mobility',
       'Enquiry Based',
-      'Point to Point / Airport Runs',
-      'Transparent Slab',
-      'Grace Waiting Buffer',
-      'Corporate airport pickup and drop-offs for employees, executives, business visitors, and VIP guests with flight tracking.',
+      'Shift Rosters / Industrial Shuttles',
+      'Contract Slabs',
+      'SLA Backed',
+      'Daily staff commute, shift-based pickup/drop, employee shuttles, route planning, and workforce movement for offices and industrial units.',
       JSON.stringify([
-        'Punctual airport pickup and drop-offs',
-        'Coordinated for employees, executives & VIP guests',
-        'Flight status tracking and flight delay buffer',
-        'Luggage assistance and airport terminal coordination',
-        '24x7 dedicated airport helpdesk'
+        'Automated route planning & GPS geofencing',
+        'Shift-based pickup/drop for IT & industrial units',
+        'Worker transport & company cabs around Markal MIDC',
+        'Escort security marshals for night female shifts',
+        'Monthly consolidated GST invoicing with MIS'
       ]),
       1
     ],
     [
-      'Intercity & Outstation Business Travel',
-      'Outstation Mobility',
-      'Enquiry Based',
-      'Minimum 250 KM / Day',
-      'Per-KM Highway Tariff',
-      'Driver Batta Applicable',
-      'Long-distance journeys, business tours, and coordinated travel between cities across Maharashtra and Pan-India networks.',
+      'Conferences, Events & Delegations',
+      'Event Logistics',
+      'Custom RFP',
+      'Event Duration / Multi-Vehicle',
+      'Dedicated Coordinator',
+      'On-Ground Marshal',
+      'End-to-end fleet mobility for corporate conferences, annual general meetings, foreign delegations, and product launches.',
       JSON.stringify([
-        'Long-distance journeys & business tours',
-        'Coordinated travel between major cities',
-        'Well-rested, trained highway chauffeurs',
-        'All valid highway permits & commercial compliance',
-        'Pan-India breakdown assistance & backup coordination'
+        'VIP protocol with executive sedans & MPVs',
+        'Dedicated on-site transport desk & marshals',
+        'Real-time fleet tracking & convoy management',
+        'Luggage vans & airport terminal reception',
+        'Strict privacy & non-disclosure standards'
       ]),
       0
     ],
     [
-      'Employee Transportation & Monthly Cab Services',
-      'Monthly Contracts',
+      'Pan India Car Rental Services',
+      'Pan-India Network',
       'Enquiry Based',
-      'Daily Commute / Shift Pickup & Drop',
-      'Corporate Monthly Contract',
-      'SLA-Backed Punctuality',
-      'Daily staff commute, shift-based pickup/drop, employee shuttles, route planning, and workforce movement for offices and industrial units.',
+      '100+ Major Cities',
+      'Distance & Day Tariff',
+      'Single Window Billing',
+      'A multi-city network and a centralized coordination model for companies needing ground transportation across India.',
       JSON.stringify([
-        'Daily staff commute & shift-based pickup/drop',
-        'Employee shuttles & industrial route planning',
-        'Workforce movement for IT parks & industrial units',
-        'Worker transport & company cabs around Markal MIDC',
-        'Flexible monthly rental plans & long-term contracts'
+        'Centralized coordination across 100+ major cities',
+        'Unified corporate service level agreement (SLA)',
+        'Highway-certified chauffeurs with valid permits',
+        'Single consolidated monthly billing & MIS reports',
+        '24x7 emergency roadside backup & dispatch'
       ]),
       1
     ]

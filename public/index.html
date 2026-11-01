@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pune Corporate Cars India Private Limited | Corporate Travel, Managed with Confidence</title>
-  <meta name="description" content="Pune Corporate Cars India Private Limited - Corporate car rental, chauffeur-driven executive cars, employee transportation, airport transfers, intercity and multi-city business travel.">
+  <meta name="description" content="Pune Corporate Cars India Private Limited - Corporate car rental, employee transport solutions, car rental services, conferences & delegations, event transportation, hotel travel desk, wedding car rental, travel partners program, pan India car rental services, and monthly/long term rentals.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
     </div>
   </aside>
 
-  <!-- 2. Sticky Header & Navigation (From PDF Page 7 Recommended Navigation) -->
+  <!-- 2. Sticky Header & Navigation with Services Dropdown (From Photo) -->
   <header class="site-header">
     <div class="container navbar">
       <a href="#" class="brand-logo-small">
@@ -58,27 +58,105 @@
 
       <nav>
         <ul class="nav-links">
-          <li><a href="#home" class="nav-link">Home</a></li>
-          <li><a href="#services" class="nav-link">Services</a></li>
-          <li><a href="#fleet" class="nav-link">Fleet</a></li>
-          <li><a href="#pricing" class="nav-link">Pricing</a></li>
-          <li><a href="#directors" class="nav-link">Directors</a></li>
-          <li><a href="#locations" class="nav-link">Locations</a></li>
-          <li><a href="#solutions" class="nav-link">Corporate Solutions</a></li>
-          <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
-          <li><a href="#blogs" class="nav-link">Blogs</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#directors" class="nav-link">ABOUT US ▾</a></li>
+          
+          <!-- Services Dropdown strictly matching the photo -->
+          <li class="nav-item-dropdown">
+            <a href="#services" class="nav-link dropdown-trigger">
+              SERVICES <span class="dropdown-icon">▾</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Corporate Car Rental' })">Corporate Car Rental</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Employee Transport Solutions' })">Employee Transport Solutions</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Car Rental Services' })">Car Rental Services</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Conferences & Delegations' })">Conferences & Delegations</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Event Transportation' })">Event Transportation</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Hotel Travel Desk' })">Hotel Travel Desk</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Wedding Car Rental' })">Wedding Car Rental</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Travel Partners Program' })">Travel Partners Program</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Pan India Car rental services' })">Pan India Car rental services</a></li>
+              <li><a href="#services" class="dropdown-item" onclick="openBookingModal({ service_type: 'Monthly/Long Term Rentals' })">Monthly/Long Term Rentals</a></li>
+            </ul>
+          </li>
+
+          <li><a href="#fleet" class="nav-link">RIDES ▾</a></li>
+          <li><a href="#blogs" class="nav-link">BLOG</a></li>
+          <li><a href="#locations" class="nav-link">OUR NETWORK</a></li>
+          <li><a href="#contact" class="nav-link">CONTACT US ▾</a></li>
         </ul>
       </nav>
 
+      <!-- Exact Action Buttons from the Photo: Book Ride & Pay Now -->
       <div class="nav-actions">
-        <button class="btn btn-primary btn-sm" onclick="openBookingModal({ service_type: 'Corporate car rental' })">
-          Request a Quote
+        <button class="btn-book-ride" onclick="openBookingModal({ service_type: 'Corporate Car Rental' })">
+          Book Ride
+        </button>
+        <button class="btn-pay-now" onclick="openPayModal()">
+          Pay Now
         </button>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation">☰</button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer (Matching the exact mobile screenshot) -->
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <div class="mobile-nav-header">
+      <div class="brand-text-nav">
+        <h2 style="font-size: 1.2rem; color: #fff;">PUNE CORPORATE CARS</h2>
+        <span style="color: var(--accent-cyan); font-size: 0.72rem;">Mobile Quick Access</span>
+      </div>
+      <button class="modal-close-btn" id="closeMobileDrawer" aria-label="Close menu">✕</button>
+    </div>
+
+    <ul class="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="#directors" class="mobile-nav-link" onclick="closeMobileMenu()">ABOUT US <span>▾</span></a>
+      </li>
+
+      <!-- SERVICES (Expanded with white box like screenshot) -->
+      <li class="mobile-nav-item">
+        <div class="mobile-nav-link" style="color: #e11d48;">
+          SERVICES <span>▾</span>
+        </div>
+        <div class="mobile-services-box">
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Corporate Car Rental' });">Corporate Car Rental</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Employee Transport Solutions' });">Employee Transport Solutions</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Car Rental Services' });">Car Rental Services</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Conferences & Delegations' });">Conferences & Delegations</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Event Transportation' });">Event Transportation</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Hotel Travel Desk' });">Hotel Travel Desk</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Wedding Car Rental' });">Wedding Car Rental</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Travel Partners Program' });">Travel Partners Program</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Pan India Car rental services' });">Pan India Car rental services</a>
+          <a href="#services" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Monthly/Long Term Rentals' });">Monthly/Long Term Rentals</a>
+        </div>
+      </li>
+
+      <li class="mobile-nav-item">
+        <a href="#fleet" class="mobile-nav-link" onclick="closeMobileMenu()">RIDES <span>▾</span></a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#blogs" class="mobile-nav-link" onclick="closeMobileMenu()">BLOG</a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#locations" class="mobile-nav-link" onclick="closeMobileMenu()">OUR NETWORK</a>
+      </li>
+      <li class="mobile-nav-item">
+        <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu()">CONTACT US <span>▾</span></a>
+      </li>
+    </ul>
+
+    <!-- Action Buttons from photo at bottom of mobile menu -->
+    <div class="mobile-drawer-actions">
+      <button class="btn-book-ride" onclick="closeMobileMenu(); openBookingModal({ service_type: 'Corporate Car Rental' });" style="width: 100%;">
+        Book Ride
+      </button>
+      <button class="btn-pay-now" onclick="closeMobileMenu(); openPayModal();" style="width: 100%;">
+        Pay Now
+      </button>
+    </div>
+  </div>
 
   <!-- 3. STARTING INTERFACE: COMPANY NAME TOP-MIDDLE + PROMINENT REAL CAR SHOWCASE -->
   <section class="hero-starting-interface" id="home">
@@ -117,7 +195,7 @@
           </p>
 
           <div class="hero-car-footer-actions">
-            <button class="btn btn-primary" onclick="openBookingModal({ service_type: 'Corporate car rental' })">
+            <button class="btn btn-primary" onclick="openBookingModal({ service_type: 'Corporate Car Rental' })">
               Request a Corporate Quote →
             </button>
             <a href="tel:+919822943334" class="btn btn-outline">
@@ -162,13 +240,16 @@
               <div class="calc-form-group">
                 <label>Service Type *</label>
                 <select class="calc-select" name="service_type" required>
-                  <option value="Corporate car rental">Corporate car rental</option>
-                  <option value="Employee transportation">Employee transportation</option>
-                  <option value="Airport transfers">Airport transfers</option>
-                  <option value="Executive and VIP travel">Executive and VIP travel</option>
-                  <option value="Intercity / outstation travel">Intercity / outstation travel</option>
-                  <option value="Industrial and shuttle transport">Industrial and shuttle transport</option>
-                  <option value="Monthly cab services">Monthly cab services</option>
+                  <option value="Corporate Car Rental">Corporate Car Rental</option>
+                  <option value="Employee Transport Solutions">Employee Transport Solutions</option>
+                  <option value="Car Rental Services">Car Rental Services</option>
+                  <option value="Conferences & Delegations">Conferences & Delegations</option>
+                  <option value="Event Transportation">Event Transportation</option>
+                  <option value="Hotel Travel Desk">Hotel Travel Desk</option>
+                  <option value="Wedding Car Rental">Wedding Car Rental</option>
+                  <option value="Travel Partners Program">Travel Partners Program</option>
+                  <option value="Pan India Car rental services">Pan India Car rental services</option>
+                  <option value="Monthly/Long Term Rentals">Monthly/Long Term Rentals</option>
                 </select>
               </div>
               <div class="calc-form-group">
@@ -221,80 +302,96 @@
     </div>
   </section>
 
-  <!-- 4. SERVICES AND OFFERINGS (Exact 8 Categories from PDF Page 3) -->
+  <!-- 4. SERVICES AND OFFERINGS (All 10 Features Mentioned in the Photo) -->
   <section class="section" id="services" style="background: rgba(4, 9, 22, 0.65);">
     <div class="container">
       <div class="section-head">
         <div class="section-tag">Services & Offerings</div>
-        <h2 class="section-title">One Transport Partner for Everyday Business Travel</h2>
+        <h2 class="section-title">Comprehensive Corporate Mobility Services</h2>
         <p class="section-desc">
-          Professional chauffeur-driven transport for companies, employees, executives, airport transfers, VIP guests, and business travel.
+          Professional chauffeur-driven transport engineered for corporate enterprises, employees, executive delegations, airport transfers, events, and long-term contracts.
         </p>
       </div>
 
       <div class="services-grid">
-        <!-- 1 -->
+        <!-- 1. Corporate Car Rental -->
         <div class="service-card">
           <div class="service-icon-box">🚗</div>
           <h3>Corporate Car Rental</h3>
-          <p>Chauffeur-driven sedans, SUVs, executive cars, short-term rentals, dedicated vehicles, and longer-term corporate contracts.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Corporate car rental' })">Enquire →</button>
+          <p>Chauffeur-driven sedans, SUVs, and luxury executive cars for daily business meetings, executive travel, client visits, and dedicated corporate accounts.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Corporate Car Rental' })">Enquire →</button>
         </div>
 
-        <!-- 2 -->
+        <!-- 2. Employee Transport Solutions -->
         <div class="service-card">
           <div class="service-icon-box">🚌</div>
-          <h3>Employee Transportation</h3>
-          <p>Daily staff commute, shift-based pickup/drop, employee shuttles, route planning, and workforce movement for offices and industrial units.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Employee transportation' })">Enquire →</button>
+          <h3>Employee Transport Solutions</h3>
+          <p>Safe, technology-driven daily staff commute, shift-based pickups and drops, industrial shuttles, route optimization, and workforce movement for tech campuses and manufacturing plants.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Employee Transport Solutions' })">Enquire →</button>
         </div>
 
-        <!-- 3 -->
+        <!-- 3. Car Rental Services -->
         <div class="service-card">
-          <div class="service-icon-box">✈️</div>
-          <h3>Airport Transfers</h3>
-          <p>Corporate airport pickup and drop-offs for employees, executives, business visitors, and VIP guests with punctual coordinated dispatch.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Airport transfers' })">Enquire →</button>
+          <div class="service-icon-box">🚘</div>
+          <h3>Car Rental Services</h3>
+          <p>Comprehensive chauffeur-driven car rental packages for local 8Hr/80Km, full-day business runs, airport transfers, and point-to-point city transit with transparent billing.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Car Rental Services' })">Enquire →</button>
         </div>
 
-        <!-- 4 -->
+        <!-- 4. Conferences & Delegations -->
         <div class="service-card">
-          <div class="service-icon-box">👑</div>
-          <h3>Executive and VIP Travel</h3>
-          <p>Premium cars and professional chauffeurs for senior management, clients, conferences, meetings, and special assignments.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Executive and VIP travel' })">Enquire →</button>
+          <div class="service-icon-box">🤝</div>
+          <h3>Conferences & Delegations</h3>
+          <p>Coordinated fleet mobility management for major corporate summits, annual leadership meetings, foreign delegation protocol, and multi-vehicle convoy management.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Conferences & Delegations' })">Enquire →</button>
         </div>
 
-        <!-- 5 -->
+        <!-- 5. Event Transportation -->
         <div class="service-card">
-          <div class="service-icon-box">🛣️</div>
-          <h3>Intercity / Outstation Travel</h3>
-          <p>Long-distance journeys, business tours, and coordinated travel between cities across Maharashtra and Pan-India networks.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Intercity / outstation travel' })">Enquire →</button>
+          <div class="service-icon-box">🎪</div>
+          <h3>Event Transportation</h3>
+          <p>End-to-end guest logistics for corporate events, product launches, galas, award nights, and large group transit with on-ground coordinators and marshals.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Event Transportation' })">Enquire →</button>
         </div>
 
-        <!-- 6 -->
+        <!-- 6. Hotel Travel Desk -->
+        <div class="service-card">
+          <div class="service-icon-box">🏨</div>
+          <h3>Hotel Travel Desk</h3>
+          <p>Dedicated hospitality mobility partnerships with luxury hotels to provide 24×7 concierge ground transport, guest airport runs, and city sightseeing cars.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Hotel Travel Desk' })">Enquire →</button>
+        </div>
+
+        <!-- 7. Wedding Car Rental -->
+        <div class="service-card">
+          <div class="service-icon-box">💍</div>
+          <h3>Wedding Car Rental</h3>
+          <p>Premium luxury fleet (Mercedes-Benz, BMW, Jaguar, Toyota Fortuner, Innova Hycross) for bridal entourage, VIP family guests, and wedding event convoys.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Wedding Car Rental' })">Enquire →</button>
+        </div>
+
+        <!-- 8. Travel Partners Program -->
         <div class="service-card">
           <div class="service-icon-box">🌐</div>
-          <h3>Pan-India Corporate Mobility</h3>
-          <p>A multi-city network and a centralized coordination model for companies needing transport across 100+ major cities in India.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Pan-India corporate mobility' })">Enquire →</button>
+          <h3>Travel Partners Program</h3>
+          <p>Strategic B2B partnerships with travel management companies (TMCs), corporate travel agents, and airlines offering priority dispatch and commission/rebate structures.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Travel Partners Program' })">Enquire →</button>
         </div>
 
-        <!-- 7 -->
+        <!-- 9. Pan India Car rental services -->
         <div class="service-card">
-          <div class="service-icon-box">🏭</div>
-          <h3>Industrial and Shuttle Transport</h3>
-          <p>Worker transport, industrial shuttles, employee commute, company cabs, and SUVs for group travel around Markal MIDC and manufacturing zones.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Industrial and shuttle transport' })">Enquire →</button>
+          <div class="service-icon-box">🗺️</div>
+          <h3>Pan India Car rental services</h3>
+          <p>Seamless ground mobility network spanning 100+ major cities across India with centralized single-window coordination, SLA monitoring, and consolidated corporate billing.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Pan India Car rental services' })">Enquire →</button>
         </div>
 
-        <!-- 8 -->
+        <!-- 10. Monthly/Long Term Rentals -->
         <div class="service-card">
           <div class="service-icon-box">📅</div>
-          <h3>Monthly Cab Services</h3>
-          <p>Recurring office commuting and longer-term transport needs with flexible rental plans, dedicated drivers, and centralized monthly reporting.</p>
-          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Monthly cab services' })">Enquire →</button>
+          <h3>Monthly/Long Term Rentals</h3>
+          <p>Dedicated monthly vehicle leases with dedicated professional chauffeurs, scheduled maintenance, backup vehicle guarantees, and flexible enterprise contract terms.</p>
+          <button class="btn btn-outline btn-sm" onclick="openBookingModal({ service_type: 'Monthly/Long Term Rentals' })">Enquire →</button>
         </div>
       </div>
     </div>
@@ -505,37 +602,7 @@
     </div>
   </section>
 
-  <!-- 11. CORPORATE SOLUTIONS (PDF Page 7 Item 9) -->
-  <section class="section" id="solutions" style="background: rgba(3, 7, 18, 0.7);">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-tag">Corporate Solutions</div>
-        <h2 class="section-title">Specialized Ground Mobility Architecture</h2>
-        <p class="section-desc">Tailored operational models for diverse corporate needs.</p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
-          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Employee Shifts & Shuttles</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Rostered pickup/drop for tech parks and IT campuses with automated route planning and night escort safety.</p>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
-          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Dedicated Monthly Contracts</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Dedicated vehicles and chauffeurs assigned exclusively to your organization on renewable monthly terms.</p>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
-          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Airport Helpdesk & Protocol</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Dedicated airport pickup desk with terminal meet-and-greet placard service and live flight tracking.</p>
-        </div>
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 2rem;">
-          <h3 style="font-size: 1.15rem; color: #fff; margin-bottom: 0.5rem;">Industrial Workforce Transportation</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">Worker transport, company cabs, and group shuttles connecting Markal MIDC, Chakan, and manufacturing hubs.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 12. TESTIMONIALS (PDF Page 5-6 Item 8 Names & Themes) -->
+  <!-- 11. TESTIMONIALS (PDF Page 5-6 Item 8 Names & Themes) -->
   <section class="section" id="testimonials">
     <div class="container">
       <div class="section-head">
@@ -552,7 +619,7 @@
     </div>
   </section>
 
-  <!-- 13. BLOG TOPICS (Exact Titles from PDF Page 6) -->
+  <!-- 12. BLOG TOPICS (Exact Titles from PDF Page 6) -->
   <section class="section" id="blogs" style="background: rgba(4, 9, 22, 0.7);">
     <div class="container">
       <div class="section-head">
@@ -569,7 +636,7 @@
     </div>
   </section>
 
-  <!-- 14. FREQUENTLY ASKED QUESTIONS (From PDF Page 7 Item 11) -->
+  <!-- 13. FREQUENTLY ASKED QUESTIONS (From PDF Page 7 Item 11) -->
   <section class="section" id="faq">
     <div class="container">
       <div class="section-head">
@@ -632,7 +699,7 @@
     </div>
   </section>
 
-  <!-- 15. FINAL CTA & FOOTER (PDF Page 2 & Page 7 Item 12) -->
+  <!-- 14. FINAL CTA & FOOTER (PDF Page 2 & Page 7 Item 12) -->
   <footer class="site-footer" id="contact">
     <div class="container">
       <div class="footer-top-grid">
@@ -659,15 +726,18 @@
         </div>
 
         <div class="footer-col">
-          <h4>Services Catalogue</h4>
+          <h4>Services Catalogue (10 Features)</h4>
           <ul class="footer-links">
-            <li><a href="#services">Corporate car rental</a></li>
-            <li><a href="#services">Employee transportation</a></li>
-            <li><a href="#services">Airport transfers</a></li>
-            <li><a href="#services">Executive and VIP travel</a></li>
-            <li><a href="#services">Intercity / outstation travel</a></li>
-            <li><a href="#services">Industrial & shuttle transport</a></li>
-            <li><a href="#services">Monthly cab services</a></li>
+            <li><a href="#services">Corporate Car Rental</a></li>
+            <li><a href="#services">Employee Transport Solutions</a></li>
+            <li><a href="#services">Car Rental Services</a></li>
+            <li><a href="#services">Conferences & Delegations</a></li>
+            <li><a href="#services">Event Transportation</a></li>
+            <li><a href="#services">Hotel Travel Desk</a></li>
+            <li><a href="#services">Wedding Car Rental</a></li>
+            <li><a href="#services">Travel Partners Program</a></li>
+            <li><a href="#services">Pan India Car rental services</a></li>
+            <li><a href="#services">Monthly/Long Term Rentals</a></li>
           </ul>
         </div>
 
@@ -716,7 +786,7 @@
     </div>
   </footer>
 
-  <!-- 16. Interactive Booking Modal -->
+  <!-- 15. Interactive Booking Modal -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal-content">
       <button class="modal-close-btn" id="closeBookingModal" aria-label="Close modal">✕</button>
@@ -731,13 +801,16 @@
           <div class="calc-form-group">
             <label>Service Required *</label>
             <select class="calc-select" name="service_type" id="modalServiceType" required>
-              <option value="Corporate car rental">Corporate car rental</option>
-              <option value="Employee transportation">Employee transportation</option>
-              <option value="Airport transfers">Airport transfers</option>
-              <option value="Executive and VIP travel">Executive and VIP travel</option>
-              <option value="Intercity / outstation travel">Intercity / outstation travel</option>
-              <option value="Industrial and shuttle transport">Industrial and shuttle transport</option>
-              <option value="Monthly cab services">Monthly cab services</option>
+              <option value="Corporate Car Rental">Corporate Car Rental</option>
+              <option value="Employee Transport Solutions">Employee Transport Solutions</option>
+              <option value="Car Rental Services">Car Rental Services</option>
+              <option value="Conferences & Delegations">Conferences & Delegations</option>
+              <option value="Event Transportation">Event Transportation</option>
+              <option value="Hotel Travel Desk">Hotel Travel Desk</option>
+              <option value="Wedding Car Rental">Wedding Car Rental</option>
+              <option value="Travel Partners Program">Travel Partners Program</option>
+              <option value="Pan India Car rental services">Pan India Car rental services</option>
+              <option value="Monthly/Long Term Rentals">Monthly/Long Term Rentals</option>
             </select>
           </div>
 
@@ -811,6 +884,72 @@
 
         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem;">
           Submit Corporate Proposal Request →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 16. Corporate Payment Gateway (Pay Now Modal) -->
+  <div class="modal-overlay" id="payModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="closePayModal" aria-label="Close modal">✕</button>
+      
+      <div style="margin-bottom: 1.25rem;">
+        <div style="color: #e11d48; font-size: 1.5rem; margin-bottom: 0.25rem;">💳</div>
+        <h2 style="font-size: 1.35rem; color: #fff; margin-bottom: 0.25rem;">Corporate Payment Gateway</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Pune Corporate Cars India Private Limited</p>
+      </div>
+
+      <div class="pay-details-card">
+        <div style="font-size: 0.78rem; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem;">
+          Official Bank RTGS / NEFT / IMPS Account
+        </div>
+        <div class="bank-detail-row">
+          <span>Account Name:</span>
+          <strong>Pune Corporate Cars India Pvt. Ltd.</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span>Current A/c No:</span>
+          <strong>50200084920192</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span>Bank & Branch:</span>
+          <strong>HDFC Bank, Nagar Road, Pune</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span>IFSC Code:</span>
+          <strong>HDFC0000039</strong>
+        </div>
+        <div class="bank-detail-row">
+          <span>Corporate UPI ID:</span>
+          <strong style="color: var(--primary-gold-light);">pay@punecorporatecars</strong>
+        </div>
+      </div>
+
+      <form id="quickPayForm" onsubmit="event.preventDefault(); alert('Payment reference recorded! Accounts team will issue a GST receipt shortly.'); closePayModal();">
+        <div class="calc-form-group">
+          <label>Booking Reference or Invoice Number</label>
+          <input type="text" class="calc-input" placeholder="e.g. PCC-2026-1001 or INV-2026-089" required>
+        </div>
+
+        <div class="calc-row-2">
+          <div class="calc-form-group">
+            <label>Amount (INR) *</label>
+            <input type="number" class="calc-input" placeholder="₹ Amount" required min="100">
+          </div>
+          <div class="calc-form-group">
+            <label>Payment Method *</label>
+            <select class="calc-select" required>
+              <option value="UPI / QR Code">Corporate UPI / QR</option>
+              <option value="NetBanking / RTGS">NetBanking / RTGS / NEFT</option>
+              <option value="Corporate Credit Card">Corporate Credit Card</option>
+              <option value="GST Credit Billing">Consolidated Monthly Invoicing</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; margin-top: 0.5rem; background: #e11d48; border-color: #e11d48;">
+          Proceed to Pay / Submit Ref →
         </button>
       </form>
     </div>

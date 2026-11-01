@@ -56,24 +56,61 @@ function initNavbar() {
   });
 
   const mobileToggle = document.getElementById('mobileToggle');
-  const navLinks = document.querySelector('.nav-links');
-  if (mobileToggle && navLinks) {
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const closeMobileDrawer = document.getElementById('closeMobileDrawer');
+
+  if (mobileToggle && mobileDrawer) {
     mobileToggle.addEventListener('click', () => {
-      const isVisible = navLinks.style.display === 'flex';
-      navLinks.style.display = isVisible ? 'none' : 'flex';
-      if (!isVisible) {
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '100%';
-        navLinks.style.left = '0';
-        navLinks.style.width = '100%';
-        navLinks.style.background = '#070e1f';
-        navLinks.style.padding = '1.5rem';
-        navLinks.style.borderBottom = '1px solid var(--border-gold)';
-      }
+      mobileDrawer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  if (closeMobileDrawer && mobileDrawer) {
+    closeMobileDrawer.addEventListener('click', () => {
+      mobileDrawer.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Pay Modal triggers
+  const payModal = document.getElementById('payModal');
+  const closePayModal = document.getElementById('closePayModal');
+  if (closePayModal && payModal) {
+    closePayModal.addEventListener('click', () => {
+      payModal.classList.remove('active');
+    });
+    payModal.addEventListener('click', (e) => {
+      if (e.target === payModal) payModal.classList.remove('active');
     });
   }
 }
+
+window.openMobileMenu = function () {
+  const drawer = document.getElementById('mobileDrawer');
+  if (drawer) {
+    drawer.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeMobileMenu = function () {
+  const drawer = document.getElementById('mobileDrawer');
+  if (drawer) {
+    drawer.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+window.openPayModal = function () {
+  const payModal = document.getElementById('payModal');
+  if (payModal) payModal.classList.add('active');
+};
+
+window.closePayModal = function () {
+  const payModal = document.getElementById('payModal');
+  if (payModal) payModal.classList.remove('active');
+};
 
 // 1. Load Fleet with REAL PHOTOGRAPHY
 async function loadFleet(category = 'all') {

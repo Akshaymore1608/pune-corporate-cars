@@ -104,22 +104,24 @@ app.post('/api/calculate-fare', (req, res) => {
 
     switch (service_type) {
       case 'Airport Transfer':
+      case 'Hotel Travel Desk':
         estimatedFare = vehicle.airport_fare;
         breakdown = {
-          rateType: 'Airport Flat Rate',
+          rateType: 'Airport & Hotel Transfer Flat Rate',
           basePrice: vehicle.airport_fare,
-          includes: 'Fuel, Driver, 45 Min Airport Waiting, Flight Delay Buffer',
+          includes: 'Chauffeur, Fuel, 45 Min Flight/Concierge Waiting, Flight Delay Buffer',
           tollParking: 'Toll & Airport Parking at actuals'
         };
         break;
 
       case 'Outstation Trip':
+      case 'Pan India Car rental services':
         const billedKm = Math.max(distance_km || 250, 250);
         const kmCharge = billedKm * vehicle.per_km_outstation;
         const driverAllowance = 350; // Driver day/night batta
         estimatedFare = kmCharge + driverAllowance;
         breakdown = {
-          rateType: 'Outstation Kilometer Tariff',
+          rateType: 'Pan India Outstation Tariff',
           billedKm,
           perKmRate: vehicle.per_km_outstation,
           kmCharge,
@@ -128,6 +130,8 @@ app.post('/api/calculate-fare', (req, res) => {
         };
         break;
 
+      case 'Employee Transport Solutions':
+      case 'Monthly/Long Term Rentals':
       case 'Employee Commute':
       case 'Monthly Corporate Contract':
         // Estimate custom slab
@@ -139,6 +143,21 @@ app.post('/api/calculate-fare', (req, res) => {
         };
         break;
 
+      case 'Conferences & Delegations':
+      case 'Event Transportation':
+      case 'Wedding Car Rental':
+        let eventBase = vehicle.base_fare_local * 1.15; // VIP/Event protocol handling
+        estimatedFare = eventBase;
+        breakdown = {
+          rateType: 'Executive Event & VIP Protocol Rate',
+          basePackagePrice: Math.round(eventBase),
+          includes: 'White-glove chauffeur in formal attire, spotless interior, on-ground coordinator'
+        };
+        break;
+
+      case 'Travel Partners Program':
+      case 'Corporate Car Rental':
+      case 'Car Rental Services':
       case 'Local Corporate (8H/80KM)':
       default:
         let base = vehicle.base_fare_local;
@@ -148,11 +167,11 @@ app.post('/api/calculate-fare', (req, res) => {
         let extraHrCost = extraHrs * 200;
         estimatedFare = base + extraKmCost + extraHrCost;
         breakdown = {
-          rateType: 'Local Package (8H / 80KM)',
+          rateType: 'Car Rental Package (8H / 80KM)',
           basePackagePrice: base,
           extraKmCost,
           extraHrCost,
-          includes: 'Uniformed chauffeur, fuel, AC throughout Pune city limits'
+          includes: 'Uniformed chauffeur, fuel, AC throughout city limits'
         };
         break;
     }
