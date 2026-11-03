@@ -123,6 +123,63 @@ async function runTests() {
     }).then(r => r.json());
     assert(agentQuote.success && agentQuote.bookingRef.startsWith('PCC-'), `AI Agent quote generator created reference: ${agentQuote.bookingRef}`);
 
+    // Test 16: Security: Rejection of hardcoded or forged demo admin token
+    const forgedAuth = await fetch(`${baseUrl}/api/admin/stats`, {
+      headers: { 'Authorization': 'Bearer demo-admin-token-2026' }
+    });
+    assert(forgedAuth.status === 401, 'Hardcoded demo admin token is rejected with 401 Unauthorized');
+
+    // Test 17: Security: Server-side fare recalculation protects against price tampering
+    const tamperedBooking = await fetch(`${baseUrl}/api/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: 'Test Security Audit',
+        company_name: 'Security Test Corp',
+        phone: '+91 9822943334',
+        email: 'audit@example.com',
+        service_type: 'Airport Transfer',
+        vehicle_id: fleet.data[0].id,
+        pickup_city: 'Pune',
+        destination: 'Pune Airport (PNQ)',
+        estimated_fare: 1 // Attempted price manipulation
+      })
+    }).then(r => r.json());
+    assert(tamperedBooking.success && tamperedBooking.verifiedFare > 1000, `Client fare manipulation prevented: server calculated ₹${tamperedBooking.verifiedFare}`);
+
+    // Test 18: Security: CSV Formula Injection escaping
+    const formulaInjectionBooking = await fetch(`${baseUrl}/api/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: '=CMD|\' /C calc\'!A0',
+        company_name: '=SUM(1+1)',
+        phone: '+91 9822943334',
+        email: 'formula@example.com',
+        service_type: 'Corporate Car Rental',
+        pickup_city: 'Pune'
+      })
+    }).then(r => r.json());
+    const exportedFormulaCsv = await fetch(`${baseUrl}/api/admin/export/bookings?token=${adminLogin.token}`).then(r => r.text());
+    assert(exportedFormulaCsv.includes("''=CMD") || exportedFormulaCsv.includes("''=SUM") || exportedFormulaCsv.includes("'=SUM"), 'CSV formula injection escaped with leading single quote');
+
+    // Test 19: Security: Input validation on malformed email
+    const invalidEmailRes = await fetch(`${baseUrl}/api/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: 'Valid Name',
+        phone: '+91 9822943334',
+        email: 'not-an-email',
+        service_type: 'Airport Transfer',
+        pickup_city: 'Pune'
+      })
+    });
+    assert(invalidEmailRes.status === 400, 'Invalid email in booking payload is rejected with 400 Bad Request');
+
+    // Test 20: High-Entropy Collision-Proof Reference Check
+    assert(newBooking.bookingRef.length >= 12, `High-entropy booking reference generated: ${newBooking.bookingRef}`);
+
     console.log(`\n====================================================`);
     console.log(`📊 TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
     console.log(`====================================================`);

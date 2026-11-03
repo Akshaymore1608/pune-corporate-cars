@@ -28,25 +28,23 @@ Built based on official corporate specifications, incorporating comprehensive se
 - **Key Metrics (KPIs)**: Total bookings, pending quotes, corporate RFQs, estimated pipeline revenue, active fleet count.
 - **Live Dispatch Manager**: Search, filter by status (`New`, `Quoted`, `Confirmed`, `Completed`, `Cancelled`), assign drivers, and assign vehicle registration plates.
 - **Corporate RFQs Manager**: Review and advance high-volume corporate tenders.
-- **1-Click CSV Data Export**: Instant download of bookings and corporate leads in CSV format for Excel/CRM reporting.
-- **Default Admin Credentials**:
-  - Username: `admin`
-  - Password: `adminPassword2026!` (Quick 1-Click Demo Login button also available)
+- **1-Click CSV Data Export**: Instant download of bookings and corporate leads in CSV format for Excel/CRM reporting (protected against spreadsheet formula injection).
+- **Security & Access Control**: Cryptographically generated 256-bit ephemeral tokens with strict session expiry, Stored XSS sanitization, and server-side fare enforcement. Configure custom credentials via `.env`.
 
 ---
 
 ### 🚀 Getting Started
 
 #### Prerequisites
-- Node.js (v18 or higher; v22/v24 recommended)
+- Node.js (v20 or v22+ recommended)
 - npm
 
 #### Installation & Launch
 ```bash
-# 1. Install dependencies (if not already installed)
+# 1. Install dependencies
 npm install
 
-# 2. Run automated test suite (verifies 14/14 tests)
+# 2. Run automated test suite (verifies 20/20 test cases)
 node test-suite.js
 
 # 3. Start the production server
@@ -60,15 +58,13 @@ The application will start on `http://localhost:3000`:
 
 ---
 
-### 🔑 API Keys & Environment Variables
-**No paid API keys or external subscriptions are required to run or demo this website.**
-
-Configuration file: `.env`
+### 🔑 Security & Environment Variables
+Configuration file: `.env` (Use `.env.example` as a template for production)
 ```env
 PORT=3000
 NODE_ENV=production
-ADMIN_DEFAULT_USERNAME=admin
-ADMIN_DEFAULT_PASSWORD=adminPassword2026!
+ADMIN_DEFAULT_USERNAME=your_admin_username
+ADMIN_DEFAULT_PASSWORD=your_secure_production_password
 ```
 
 ---

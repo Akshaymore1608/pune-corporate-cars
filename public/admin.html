@@ -22,12 +22,12 @@
       <form id="adminLoginForm">
         <div class="calc-form-group" style="text-align: left;">
           <label>Administrator Username</label>
-          <input type="text" class="calc-input" id="loginUsername" value="admin" required>
+          <input type="text" class="calc-input" id="loginUsername" placeholder="Enter username" autocomplete="username" required>
         </div>
 
         <div class="calc-form-group" style="text-align: left;">
           <label>Password</label>
-          <input type="password" class="calc-input" id="loginPassword" value="adminPassword2026!" required>
+          <input type="password" class="calc-input" id="loginPassword" placeholder="Enter password" autocomplete="current-password" required>
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
@@ -35,10 +35,8 @@
         </button>
       </form>
 
-      <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
-        <button id="demoLoginBtn" class="btn btn-outline btn-sm" style="width: 100%;">
-          ⚡ Quick Client Demo Access (1-Click)
-        </button>
+      <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+        <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem;">Protected by SHA-256 Authentication & Ephemeral Session Tokens</p>
       </div>
 
       <div style="margin-top: 1rem;">

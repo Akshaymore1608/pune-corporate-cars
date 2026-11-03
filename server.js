@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { db, initDatabase } = require('./database');
 
 // Initialize database schema and seeds
@@ -15,18 +16,85 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Simple in-memory token store for demo admin authentication
-const activeSessions = new Set(['demo-admin-token-2026']);
+// -------------------------------------------------------------
+// SECURE ADMIN SESSION MANAGEMENT
+// -------------------------------------------------------------
+const activeSessions = new Map();
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 Hours
+
+function createAdminSession(username) {
+  const token = crypto.randomBytes(32).toString('hex');
+  activeSessions.set(token, {
+    username,
+    createdAt: Date.now(),
+    expiresAt: Date.now() + SESSION_TTL_MS
+  });
+  return token;
+}
+
+function isValidAdminSession(token) {
+  if (!token || typeof token !== 'string') return false;
+  const session = activeSessions.get(token);
+  if (!session) return false;
+  if (Date.now() > session.expiresAt) {
+    activeSessions.delete(token);
+    return false;
+  }
+  return true;
+}
+
+// Clean up expired sessions periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [tok, sess] of activeSessions.entries()) {
+    if (now > sess.expiresAt) {
+      activeSessions.delete(tok);
+    }
+  }
+}, 60 * 60 * 1000).unref();
 
 // Helper middleware for admin auth
 function requireAdminAuth(req, res, next) {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : req.query.token;
+  let token = null;
 
-  if (token && activeSessions.has(token)) {
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.slice(7).trim();
+  } else if (req.query.token) {
+    // Only permitted for direct binary/CSV export endpoints
+    token = String(req.query.token).trim();
+  }
+
+  if (isValidAdminSession(token)) {
     return next();
   }
-  return res.status(401).json({ error: 'Unauthorized: Valid Admin Token Required' });
+  return res.status(401).json({ error: 'Unauthorized: Valid Admin Authentication Required' });
+}
+
+// -------------------------------------------------------------
+// UTILITIES: HIGH-ENTROPY REFERENCES & CSV SANITIZATION
+// -------------------------------------------------------------
+
+function generateBookingRef() {
+  const year = new Date().getFullYear();
+  const hex = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `PCC-${year}-${hex}`;
+}
+
+function generateEnquiryRef() {
+  const year = new Date().getFullYear();
+  const hex = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `RFQ-${year}-${hex}`;
+}
+
+function sanitizeCsvCell(val) {
+  if (val === null || val === undefined) return '""';
+  let str = String(val).trim();
+  // Protect against spreadsheet formula injection (=, +, -, @, \t, \r)
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = "'" + str;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
 }
 
 // -------------------------------------------------------------
@@ -83,118 +151,140 @@ app.get('/api/pricing', (req, res) => {
   }
 });
 
+// -------------------------------------------------------------
+// AUTHORITATIVE SERVER-SIDE FARE ENGINE
+// -------------------------------------------------------------
+function calculateAuthoritativeFare({ vehicle_id, vehicle_name, service_type, distance_km = 80, hours = 8 }) {
+  let vehicle = null;
+  if (vehicle_id) {
+    vehicle = db.prepare('SELECT * FROM fleet WHERE id = ?').get(vehicle_id);
+  }
+  if (!vehicle && vehicle_name) {
+    vehicle = db.prepare('SELECT * FROM fleet WHERE model LIKE ? LIMIT 1').get(`%${vehicle_name}%`);
+  }
+  if (!vehicle) {
+    vehicle = db.prepare("SELECT * FROM fleet WHERE model = 'Toyota Innova Crysta'").get() ||
+              db.prepare('SELECT * FROM fleet LIMIT 1').get();
+  }
+
+  const dist = Math.max(1, Number(distance_km) || 80);
+  const hrs = Math.max(1, Number(hours) || 8);
+  let estimatedFare = 0;
+  let breakdown = {};
+
+  switch (service_type) {
+    case 'Airport Transfer':
+    case 'Hotel Travel Desk':
+      estimatedFare = vehicle.airport_fare;
+      breakdown = {
+        rateType: 'Airport & Hotel Transfer Flat Rate',
+        basePrice: vehicle.airport_fare,
+        includes: 'Chauffeur, Fuel, 45 Min Flight/Concierge Waiting Buffer',
+        tollParking: 'Toll & Airport Parking at actuals'
+      };
+      break;
+
+    case 'Outstation Trip':
+    case 'Pan India Car rental services':
+    case 'Executive Outstation':
+      const billedKm = Math.max(dist, 250);
+      const kmCharge = billedKm * vehicle.per_km_outstation;
+      const driverAllowance = 350; // Driver day/night batta
+      estimatedFare = kmCharge + driverAllowance;
+      breakdown = {
+        rateType: 'Pan India Outstation Tariff',
+        billedKm,
+        perKmRate: vehicle.per_km_outstation,
+        kmCharge,
+        driverBatta: driverAllowance,
+        minGuarantee: '250 km / calendar day minimum'
+      };
+      break;
+
+    case 'Employee Transport Solutions':
+    case 'Monthly/Long Term Rentals':
+    case 'Employee Commute':
+    case 'Monthly Corporate Contract':
+      estimatedFare = Math.round(vehicle.base_fare_local * 22 * 0.85); // 22 working days with 15% corporate discount
+      breakdown = {
+        rateType: 'Monthly Dedicated Corporate Slab (22 Days)',
+        discount: '15% Volume SLA Rebate Applied',
+        includes: 'Dedicated chauffeur, daily sanitization, automated GPS dispatch & MIS'
+      };
+      break;
+
+    case 'Conferences & Delegations':
+    case 'Event Transportation':
+    case 'Wedding Car Rental':
+      estimatedFare = Math.round(vehicle.base_fare_local * 1.15); // VIP/Event protocol handling
+      breakdown = {
+        rateType: 'Executive Event & VIP Protocol Rate',
+        basePackagePrice: Math.round(estimatedFare),
+        includes: 'White-glove chauffeur in formal attire, spotless interior, on-ground coordinator'
+      };
+      break;
+
+    case 'Travel Partners Program':
+    case 'Corporate Car Rental':
+    case 'Car Rental Services':
+    case 'Local Corporate (8H/80KM)':
+    default:
+      const base = vehicle.base_fare_local;
+      const extraKm = Math.max(0, dist - 80);
+      const extraHrs = Math.max(0, hrs - 8);
+      const extraKmCost = extraKm * vehicle.per_km_outstation;
+      const extraHrCost = extraHrs * Math.round(vehicle.base_fare_local / 8);
+      estimatedFare = base + extraKmCost + extraHrCost;
+      breakdown = {
+        rateType: 'Car Rental Package (8H / 80KM)',
+        basePackagePrice: base,
+        extraKmCost,
+        extraHrCost,
+        includes: 'Uniformed chauffeur, fuel, AC throughout city limits'
+      };
+      break;
+  }
+
+  const gst = Math.round(estimatedFare * 0.05); // 5% GST for passenger transport
+  const grandTotal = Math.round(estimatedFare + gst);
+
+  return {
+    vehicle,
+    estimatedFare,
+    gst,
+    grandTotal,
+    breakdown
+  };
+}
+
 // Dynamic Fare Calculator
 app.post('/api/calculate-fare', (req, res) => {
   try {
     const { vehicle_id, service_type, distance_km = 80, hours = 8 } = req.body;
-    
-    let vehicle = null;
-    if (vehicle_id) {
-      vehicle = db.prepare('SELECT * FROM fleet WHERE id = ?').get(vehicle_id);
-    }
-    
-    // Default fallback vehicle if none selected
-    if (!vehicle) {
-      vehicle = db.prepare('SELECT * FROM fleet WHERE model = ?').get('Toyota Innova Crysta') ||
-                db.prepare('SELECT * FROM fleet LIMIT 1').get();
-    }
-
-    let estimatedFare = 0;
-    let breakdown = {};
-
-    switch (service_type) {
-      case 'Airport Transfer':
-      case 'Hotel Travel Desk':
-        estimatedFare = vehicle.airport_fare;
-        breakdown = {
-          rateType: 'Airport & Hotel Transfer Flat Rate',
-          basePrice: vehicle.airport_fare,
-          includes: 'Chauffeur, Fuel, 45 Min Flight/Concierge Waiting, Flight Delay Buffer',
-          tollParking: 'Toll & Airport Parking at actuals'
-        };
-        break;
-
-      case 'Outstation Trip':
-      case 'Pan India Car rental services':
-        const billedKm = Math.max(distance_km || 250, 250);
-        const kmCharge = billedKm * vehicle.per_km_outstation;
-        const driverAllowance = 350; // Driver day/night batta
-        estimatedFare = kmCharge + driverAllowance;
-        breakdown = {
-          rateType: 'Pan India Outstation Tariff',
-          billedKm,
-          perKmRate: vehicle.per_km_outstation,
-          kmCharge,
-          driverBatta: driverAllowance,
-          minGuarantee: '250 km / calendar day minimum'
-        };
-        break;
-
-      case 'Employee Transport Solutions':
-      case 'Monthly/Long Term Rentals':
-      case 'Employee Commute':
-      case 'Monthly Corporate Contract':
-        // Estimate custom slab
-        estimatedFare = vehicle.base_fare_local * 22 * 0.85; // 22 working days with 15% corporate discount
-        breakdown = {
-          rateType: 'Monthly Dedicated Corporate Slab (22 Days)',
-          discount: '15% Volume SLA Rebate Applied',
-          includes: 'Dedicated chauffeur, daily sanitization, automated GPS dispatch & MIS'
-        };
-        break;
-
-      case 'Conferences & Delegations':
-      case 'Event Transportation':
-      case 'Wedding Car Rental':
-        let eventBase = vehicle.base_fare_local * 1.15; // VIP/Event protocol handling
-        estimatedFare = eventBase;
-        breakdown = {
-          rateType: 'Executive Event & VIP Protocol Rate',
-          basePackagePrice: Math.round(eventBase),
-          includes: 'White-glove chauffeur in formal attire, spotless interior, on-ground coordinator'
-        };
-        break;
-
-      case 'Travel Partners Program':
-      case 'Corporate Car Rental':
-      case 'Car Rental Services':
-      case 'Local Corporate (8H/80KM)':
-      default:
-        let base = vehicle.base_fare_local;
-        let extraKm = Math.max(0, (distance_km || 80) - 80);
-        let extraHrs = Math.max(0, (hours || 8) - 8);
-        let extraKmCost = extraKm * vehicle.per_km_outstation;
-        let extraHrCost = extraHrs * 200;
-        estimatedFare = base + extraKmCost + extraHrCost;
-        breakdown = {
-          rateType: 'Car Rental Package (8H / 80KM)',
-          basePackagePrice: base,
-          extraKmCost,
-          extraHrCost,
-          includes: 'Uniformed chauffeur, fuel, AC throughout city limits'
-        };
-        break;
-    }
-
-    const gst = Math.round(estimatedFare * 0.05); // 5% GST for passenger transport
-    const grandTotal = Math.round(estimatedFare + gst);
+    const calc = calculateAuthoritativeFare({ vehicle_id, service_type, distance_km, hours });
 
     res.json({
       success: true,
       vehicle: {
-        id: vehicle.id,
-        model: vehicle.model,
-        category: vehicle.category_label
+        id: calc.vehicle.id,
+        model: calc.vehicle.model,
+        category: calc.vehicle.category_label,
+        passengers: calc.vehicle.passengers,
+        luggage: calc.vehicle.luggage,
+        image_url: calc.vehicle.image_url
       },
-      serviceType: service_type,
-      netFare: Math.round(estimatedFare),
-      gstAmount: gst,
-      grandTotal,
-      breakdown
+      serviceType: service_type || 'Corporate Car Rental',
+      tariff: {
+        netFare: calc.estimatedFare,
+        gst5Percent: calc.gst,
+        totalEstimated: calc.grandTotal,
+        displayFare: `₹${calc.grandTotal.toLocaleString('en-IN')}`,
+        breakdown: calc.breakdown
+      }
     });
   } catch (err) {
     console.error('Fare calculation error:', err);
-    res.status(500).json({ error: 'Failed to calculate fare estimate' });
+    res.status(500).json({ error: 'Failed to calculate dynamic fare.' });
   }
 });
 
@@ -264,17 +354,46 @@ app.post('/api/bookings', (req, res) => {
       pickup_time,
       passengers,
       luggage_bags,
-      estimated_fare,
       special_requests
     } = req.body;
 
-    if (!customer_name || !phone || !email || !service_type || !pickup_city) {
-      return res.status(400).json({ error: 'Please provide all mandatory booking details (Name, Phone, Email, Service, City)' });
+    // Strict Input Validation
+    if (!customer_name || typeof customer_name !== 'string' || customer_name.trim().length < 2) {
+      return res.status(400).json({ error: 'Please enter a valid customer or coordinator name.' });
     }
 
-    // Generate unique corporate booking reference: PCC-YYYY-RANDOM
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const booking_ref = `PCC-${new Date().getFullYear()}-${randomSuffix}`;
+    if (!phone || typeof phone !== 'string' || phone.trim().replace(/\D/g, '').length < 8) {
+      return res.status(400).json({ error: 'Please enter a valid phone number (minimum 8 digits).' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(String(email).trim())) {
+      return res.status(400).json({ error: 'Please provide a valid corporate email address.' });
+    }
+
+    if (!service_type || typeof service_type !== 'string') {
+      return res.status(400).json({ error: 'Please specify the mobility service required.' });
+    }
+
+    if (!pickup_city || typeof pickup_city !== 'string' || pickup_city.trim().length < 2) {
+      return res.status(400).json({ error: 'Please specify a valid pickup city.' });
+    }
+
+    // High-Entropy Collision-Proof Booking Reference
+    const booking_ref = generateBookingRef();
+
+    // Authoritative Server-Side Fare Calculation (Prevent Client-Side Price Tampering)
+    const fareCalc = calculateAuthoritativeFare({
+      vehicle_id,
+      vehicle_name,
+      service_type,
+      distance_km: req.body.distance_km,
+      hours: req.body.hours
+    });
+
+    const verifiedFare = fareCalc.grandTotal;
+    const allocatedVehicleName = fareCalc.vehicle ? fareCalc.vehicle.model : (vehicle_name || 'Executive Sedan / SUV');
+    const allocatedVehicleId = fareCalc.vehicle ? fareCalc.vehicle.id : (vehicle_id ? Number(vehicle_id) : null);
 
     const insert = db.prepare(`
       INSERT INTO bookings (
@@ -287,20 +406,20 @@ app.post('/api/bookings', (req, res) => {
     insert.run(
       booking_ref,
       customer_name.trim(),
-      company_name ? company_name.trim() : 'Corporate Traveler',
+      company_name ? String(company_name).trim() : 'Corporate Traveler',
       phone.trim(),
-      email.trim().toLowerCase(),
-      service_type,
-      vehicle_id ? Number(vehicle_id) : null,
-      vehicle_name || 'Vehicle to be allocated',
+      String(email).trim().toLowerCase(),
+      service_type.trim(),
+      allocatedVehicleId,
+      allocatedVehicleName,
       pickup_city.trim(),
-      (destination || 'Pune Metropolitan Area').trim(),
-      pickup_date || new Date().toISOString().split('T')[0],
-      pickup_time || '09:00 AM',
-      Number(passengers) || 1,
-      Number(luggage_bags) || 1,
-      Number(estimated_fare) || 1600.0,
-      special_requests ? special_requests.trim() : '',
+      (destination ? String(destination).trim() : 'Pune Metropolitan Area'),
+      pickup_date ? String(pickup_date).trim() : new Date().toISOString().split('T')[0],
+      pickup_time ? String(pickup_time).trim() : '09:00 AM',
+      Math.min(50, Math.max(1, Number(passengers) || 1)),
+      Math.min(20, Math.max(0, Number(luggage_bags) || 1)),
+      verifiedFare,
+      special_requests ? String(special_requests).trim() : '',
       'Assigned upon dispatch confirmation',
       'Assigned upon dispatch confirmation',
       'New'
@@ -312,6 +431,7 @@ app.post('/api/bookings', (req, res) => {
       success: true,
       message: 'Booking request registered successfully! Dispatch team notified.',
       bookingRef: booking_ref,
+      verifiedFare,
       data: createdBooking
     });
   } catch (err) {
@@ -337,12 +457,28 @@ app.post('/api/enquiries', (req, res) => {
       message
     } = req.body;
 
-    if (!company_name || !contact_person || !phone || !email || !service_required) {
-      return res.status(400).json({ error: 'Please fill in Company Name, Contact Person, Phone, Email and Service required' });
+    if (!company_name || String(company_name).trim().length < 2) {
+      return res.status(400).json({ error: 'Please enter a valid company or organization name.' });
     }
 
-    const randomSuffix = Math.floor(100 + Math.random() * 900);
-    const enquiry_ref = `RFQ-${new Date().getFullYear()}-${randomSuffix}`;
+    if (!contact_person || String(contact_person).trim().length < 2) {
+      return res.status(400).json({ error: 'Please enter the primary contact person name.' });
+    }
+
+    if (!phone || String(phone).trim().replace(/\D/g, '').length < 8) {
+      return res.status(400).json({ error: 'Please enter a valid official phone number.' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(String(email).trim())) {
+      return res.status(400).json({ error: 'Please provide a valid corporate email address.' });
+    }
+
+    if (!service_required) {
+      return res.status(400).json({ error: 'Please select the required enterprise transportation service.' });
+    }
+
+    const enquiry_ref = generateEnquiryRef();
 
     const insert = db.prepare(`
       INSERT INTO corporate_enquiries (
@@ -353,17 +489,17 @@ app.post('/api/enquiries', (req, res) => {
 
     insert.run(
       enquiry_ref,
-      company_name.trim(),
-      contact_person.trim(),
-      designation ? designation.trim() : 'Corporate Representative',
-      phone.trim(),
-      email.trim().toLowerCase(),
-      service_required,
-      fleet_requirement ? fleet_requirement.trim() : 'To be discussed with account manager',
+      String(company_name).trim(),
+      String(contact_person).trim(),
+      designation ? String(designation).trim() : 'Corporate Representative',
+      String(phone).trim(),
+      String(email).trim().toLowerCase(),
+      String(service_required).trim(),
+      fleet_requirement ? String(fleet_requirement).trim() : 'To be discussed with key account manager',
       headcount ? Number(headcount) : null,
-      contract_duration ? contract_duration.trim() : 'Flexible Corporate Contract',
-      route_details ? route_details.trim() : '',
-      message ? message.trim() : '',
+      contract_duration ? String(contract_duration).trim() : 'Flexible Corporate Contract',
+      route_details ? String(route_details).trim() : '',
+      message ? String(message).trim() : '',
       'New'
     );
 
@@ -470,35 +606,30 @@ app.post('/api/admin/login', (req, res) => {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
-  const admin = db.prepare('SELECT * FROM admins WHERE username = ?').get(username);
-  if (!admin || admin.password_hash !== password) {
-    // If testing with default or common password
-    if (username === 'admin' && (password === 'admin' || password === 'admin123' || password === 'adminPassword2026!')) {
-      const token = `token-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-      activeSessions.add(token);
-      return res.json({
-        success: true,
-        token,
-        admin: {
-          username: 'admin',
-          full_name: 'PCC Command Center',
-          role: 'Super Administrator'
-        }
-      });
-    }
-    return res.status(401).json({ error: 'Invalid admin credentials' });
+  const cleanUser = String(username).trim();
+  const cleanPass = String(password).trim();
+
+  // Validate against database administrator record or environment secrets
+  const admin = db.prepare('SELECT * FROM admins WHERE username = ?').get(cleanUser);
+  const envUser = process.env.ADMIN_DEFAULT_USERNAME || 'admin';
+  const envPass = process.env.ADMIN_DEFAULT_PASSWORD || 'adminPassword2026!';
+
+  const isValidDbAdmin = admin && admin.password_hash === cleanPass;
+  const isValidEnvAdmin = cleanUser === envUser && cleanPass === envPass;
+
+  if (!isValidDbAdmin && !isValidEnvAdmin) {
+    return res.status(401).json({ error: 'Invalid administrator credentials' });
   }
 
-  const token = `token-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-  activeSessions.add(token);
+  const token = createAdminSession(cleanUser);
 
   res.json({
     success: true,
     token,
     admin: {
-      username: admin.username,
-      full_name: admin.full_name,
-      role: admin.role
+      username: cleanUser,
+      full_name: admin ? admin.full_name : 'PCC Operations Command',
+      role: admin ? admin.role : 'Super Administrator'
     }
   });
 });
@@ -634,7 +765,7 @@ app.patch('/api/admin/enquiries/:id', requireAdminAuth, (req, res) => {
   }
 });
 
-// Admin CSV Export
+// Admin CSV Export (Protected against Formula Injection)
 app.get('/api/admin/export/:type', requireAdminAuth, (req, res) => {
   try {
     const { type } = req.params;
@@ -643,26 +774,26 @@ app.get('/api/admin/export/:type', requireAdminAuth, (req, res) => {
       const rows = db.prepare('SELECT * FROM bookings ORDER BY id DESC').all();
       const headers = ['Booking Ref', 'Customer Name', 'Company', 'Phone', 'Email', 'Service', 'Vehicle', 'City', 'Destination', 'Date', 'Time', 'Pax', 'Luggage', 'Fare (INR)', 'Status', 'Driver', 'Cab'];
       
-      let csv = headers.join(',') + '\n';
+      let csv = headers.map(sanitizeCsvCell).join(',') + '\n';
       for (const r of rows) {
         const line = [
-          r.booking_ref,
-          `"${(r.customer_name || '').replace(/"/g, '""')}"`,
-          `"${(r.company_name || '').replace(/"/g, '""')}"`,
-          `"${r.phone}"`,
-          `"${r.email}"`,
-          `"${r.service_type}"`,
-          `"${r.vehicle_name}"`,
-          `"${r.pickup_city}"`,
-          `"${(r.destination || '').replace(/"/g, '""')}"`,
-          r.pickup_date,
-          r.pickup_time,
-          r.passengers,
-          r.luggage_bags,
-          r.estimated_fare,
-          r.status,
-          `"${(r.assigned_driver || '').replace(/"/g, '""')}"`,
-          `"${(r.assigned_cab || '').replace(/"/g, '""')}"`
+          sanitizeCsvCell(r.booking_ref),
+          sanitizeCsvCell(r.customer_name),
+          sanitizeCsvCell(r.company_name),
+          sanitizeCsvCell(r.phone),
+          sanitizeCsvCell(r.email),
+          sanitizeCsvCell(r.service_type),
+          sanitizeCsvCell(r.vehicle_name),
+          sanitizeCsvCell(r.pickup_city),
+          sanitizeCsvCell(r.destination),
+          sanitizeCsvCell(r.pickup_date),
+          sanitizeCsvCell(r.pickup_time),
+          sanitizeCsvCell(r.passengers),
+          sanitizeCsvCell(r.luggage_bags),
+          sanitizeCsvCell(r.estimated_fare),
+          sanitizeCsvCell(r.status),
+          sanitizeCsvCell(r.assigned_driver),
+          sanitizeCsvCell(r.assigned_cab)
         ].join(',');
         csv += line + '\n';
       }
@@ -674,21 +805,21 @@ app.get('/api/admin/export/:type', requireAdminAuth, (req, res) => {
       const rows = db.prepare('SELECT * FROM corporate_enquiries ORDER BY id DESC').all();
       const headers = ['RFQ Ref', 'Company Name', 'Contact Person', 'Designation', 'Phone', 'Email', 'Service Required', 'Fleet Req', 'Headcount', 'Duration', 'Status', 'Date'];
       
-      let csv = headers.join(',') + '\n';
+      let csv = headers.map(sanitizeCsvCell).join(',') + '\n';
       for (const r of rows) {
         const line = [
-          r.enquiry_ref,
-          `"${(r.company_name || '').replace(/"/g, '""')}"`,
-          `"${(r.contact_person || '').replace(/"/g, '""')}"`,
-          `"${(r.designation || '').replace(/"/g, '""')}"`,
-          `"${r.phone}"`,
-          `"${r.email}"`,
-          `"${r.service_required}"`,
-          `"${(r.fleet_requirement || '').replace(/"/g, '""')}"`,
-          r.headcount || '',
-          `"${r.contract_duration || ''}"`,
-          r.status,
-          r.created_at
+          sanitizeCsvCell(r.enquiry_ref),
+          sanitizeCsvCell(r.company_name),
+          sanitizeCsvCell(r.contact_person),
+          sanitizeCsvCell(r.designation),
+          sanitizeCsvCell(r.phone),
+          sanitizeCsvCell(r.email),
+          sanitizeCsvCell(r.service_required),
+          sanitizeCsvCell(r.fleet_requirement),
+          sanitizeCsvCell(r.headcount || ''),
+          sanitizeCsvCell(r.contract_duration || ''),
+          sanitizeCsvCell(r.status),
+          sanitizeCsvCell(r.created_at)
         ].join(',');
         csv += line + '\n';
       }
